@@ -15,7 +15,7 @@
 
 const cloud = require('wx-server-sdk');
 const fetch = require('node-fetch');
-const sharp = require('sharp');
+const Jimp = require('jimp');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
@@ -80,13 +80,12 @@ exports.main = async (event) => {
 
     console.log(`image loaded: ${imageBuffer.length} bytes`);
 
-    // ── 2. 生成模糊副本 ──────────────────────────────────
-    // 模糊程度：强模糊以保护隐私，但仍可辨认有内容
-    const blurredBuffer = await sharp(imageBuffer)
-      .resize({ width: 800, withoutEnlargement: true })  // 统一宽度
-      .blur(15)                                           // 强模糊
-      .jpeg({ quality: 40 })                              // 压缩
-      .toBuffer();
+    // ── 2. 生成模糊副本（用 jimp 替代 sharp，避免原生模块兼容问题）
+    const image = await Jimp.read(imageBuffer);
+    image.resize(800, Jimp.AUTO);  // 统一宽度
+    image.blur(15);                // 强模糊
+    image.quality(40);             // 压缩
+    const blurredBuffer = await image.getBufferAsync(Jimp.MIME_JPEG);
 
     console.log(`blurred: ${blurredBuffer.length} bytes`);
 

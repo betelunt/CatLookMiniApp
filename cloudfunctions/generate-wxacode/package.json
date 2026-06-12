@@ -1,0 +1,10 @@
+{
+  "name": "generate-wxacode",
+  "version": "1.0.0",
+  "description": "生成分享用小程序码 → 上传到 Supabase Storage",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^2.6.3",
+    "node-fetch": "^2.6.7"
+  }
+}
