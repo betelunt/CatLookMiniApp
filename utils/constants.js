@@ -1,10 +1,10 @@
 // ── 常量配置 ──────────────────────────────────────────────
 
-/** 猫咪品种列表 */
+/** 猫咪品种列表（与 App 端保持一致） */
 const BREEDS = [
-  '白猫', '橘猫', '黑猫', '长毛白猫', '长毛黑猫',
-  '狸花猫', '奶牛猫', '三花猫', '玳瑁猫', '灰猫',
-  '暹罗猫', '英短', '美短', '布偶猫', '其他',
+  '白猫', '黑猫', '橘猫', '狸花猫', '奶牛猫',
+  '三花猫', '玳瑁猫', '狮子猫', '橘白猫',
+  '其他田园猫', '其他品种猫',
 ];
 
 /** 猫咪状态 */
@@ -52,38 +52,34 @@ const GENDER_LABELS = {
   'female': '♀女孩',
 };
 
-/** 品种→档案拼音编码（2-3位） */
+/** 品种→档案拼音编码（2位，与 App 端一致） */
 const BREED_CODES = {
   '白猫': 'CB',
   '黑猫': 'CH',
-  '灰猫': 'HM',
   '橘猫': 'JM',
+  '狸花猫': 'LH',
+  '奶牛猫': 'NN',
   '三花猫': 'SH',
   '玳瑁猫': 'DM',
-  '奶牛猫': 'NN',
-  '狸花猫': 'LH',
-  '暹罗猫': 'XL',
-  '英短': 'YD',
-  '美短': 'MD',
-  '布偶猫': 'BO',
-  '长毛白猫': 'CMB',
-  '长毛黑猫': 'CMH',
-  '其他': 'QT',
+  '狮子猫': 'SZ',
+  '橘白猫': 'JB',
+  '其他田园猫': 'TT',
+  '其他品种猫': 'PP',
 };
 
 /**
  * 生成结构化档案编号
- * 格式：品种(2-3) + 地区代码(6) + 日期YYMMDD(6) + 随机(2)
- * 例：JM110101260612XK
+ * 格式：品种(2) + 地区代码(6) + 日期YYMMDD(6) + 随机(3)
+ * 例：JM440106260612XK3
  *
  * @param {string} breed - 品种名称（中文，需在 BREED_CODES 映射表中）
  * @param {string[]} regionCodes - 微信 picker mode="region" 返回的 code 数组 [省,市,区]
  * @param {string} dateStr - 日期字符串，如 "2026-06-12"，默认当天
- * @returns {string} 16-17位档案编号
+ * @returns {string} 17位档案编号
  */
 function generateArchiveCode(breed, regionCodes, dateStr) {
-  // 品种编码（默认 QT 其他）
-  const breedCode = BREED_CODES[breed] || 'QT';
+  // 品种编码（默认 TT 其他田园猫）
+  const breedCode = BREED_CODES[breed] || 'TT';
 
   // 地区代码：取区级 → 市级 → 省级，优先级递减
   const regionCode = (regionCodes && regionCodes.length === 3)
@@ -97,10 +93,10 @@ function generateArchiveCode(breed, regionCodes, dateStr) {
   const dd = String(d.getDate()).padStart(2, '0');
   const dateCode = `${yy}${mm}${dd}`;
 
-  // 随机2位（大写字母+数字）
+  // 随机3位（大写字母+数字，36^3=46656种组合）
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let rnd = '';
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 3; i++) {
     rnd += chars.charAt(Math.floor(Math.random() * chars.length));
   }
 
