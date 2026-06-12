@@ -81,16 +81,27 @@ exports.main = async (event) => {
     console.log(`code2Session ok: openid=${openid.slice(0, 8)}... unionid=${unionid ? unionid.slice(0, 8) + '...' : 'none'}`);
 
     // ── 2. 查询 user_identities 是否已有此微信用户 ────────
-    const existing = await supabaseAdmin(
-      'GET',
-      `/rest/v1/user_identities?wechat_unionid=eq.${encodeURIComponent(unionid || openid)}&select=user_id,wechat_unionid&limit=1`
-    );
+    // 先尝试 wechat_unionid（迁移后可用），回退到 wechat_openid
+    const wxId = unionid || openid;
+    let existing = [];
+    try {
+      existing = await supabaseAdmin(
+        'GET',
+        `/rest/v1/user_identities?wechat_unionid=eq.${encodeURIComponent(wxId)}&select=auth_user_id,wechat_unionid&limit=1`
+      );
+    } catch (_) {
+      // wechat_unionid 列不存在，回退到 wechat_openid
+      existing = await supabaseAdmin(
+        'GET',
+        `/rest/v1/user_identities?wechat_openid=eq.${encodeURIComponent(openid)}&select=auth_user_id,wechat_openid&limit=1`
+      );
+    }
 
     let userId;
 
     if (existing && existing.length > 0) {
       // 已有用户 → 复用
-      userId = existing[0].user_id;
+      userId = existing[0].auth_user_id;
       console.log(`existing user found: ${userId}`);
     } else {
       // ── 3. 新用户 → 创建 Supabase auth user ──────────
@@ -123,12 +134,36 @@ exports.main = async (event) => {
         // 直接用 sign-in 试 —— 如果存在会成功，不存在会失败
       }
 
-      // ── 4. 写入 user_identities ──────────────────────
+      // ── 4. 写入 users 表 + user_identities ──────────
       if (userId) {
-        await supabaseAdmin('POST', '/rest/v1/user_identities', {
-          user_id: userId,
-          wechat_unionid: unionid || openid,
+        // 4a. 写入 users 表（App 端依赖此表）
+        await supabaseAdmin('POST', '/rest/v1/users', {
+          id: userId,
+          username: `wx_${openid.slice(0, 8)}`,
+          email: `${openid}@wechat.mp`,
+          wechat_openid: openid,
         });
+
+        // 4b. 写入 user_identities 表
+        const identityData = {
+          auth_user_id: userId,
+          account_id: userId,
+          wechat_openid: openid,
+          provider: 'wechat',
+        };
+        // 如果有 unionid 且列已迁移，也写入
+        if (unionid) {
+          try {
+            identityData.wechat_unionid = unionid;
+            await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
+          } catch (_) {
+            // wechat_unionid 列不存在，去掉后重试
+            delete identityData.wechat_unionid;
+            await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
+          }
+        } else {
+          await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
+        }
         console.log(`new user created: ${userId}`);
       } else {
         return { ok: false, error: 'failed to create user' };
