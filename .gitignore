@@ -22,5 +22,4 @@ project.private.config.json
 *.log
 
 # Local config (contains tokens, do not push)
-CLAUDE.md
 CLAUDE.local.md
