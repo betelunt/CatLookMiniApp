@@ -1,0 +1,99 @@
+/* ── 头部 ── */
+.user-header {
+  display: flex; align-items: center; gap: 24rpx;
+  padding: 30rpx 24rpx;
+}
+.avatar {
+  width: 100rpx; height: 100rpx; border-radius: 50%;
+  background: #FFF5EC; flex-shrink: 0;
+}
+.avatar-placeholder {
+  width: 100rpx; height: 100rpx; border-radius: 50%;
+  background: #FFF5EC; display: flex; align-items: center;
+  justify-content: center; font-size: 48rpx; flex-shrink: 0;
+}
+.nickname { font-size: 34rpx; font-weight: 700; display: block; }
+.uid { font-size: 24rpx; color: var(--text-secondary); }
+
+/* ── 联系方式 ── */
+.contact-card { }
+.contact-row { display: flex; justify-content: space-between; align-items: center; }
+.contact-label { display: flex; align-items: center; gap: 8rpx; font-size: 28rpx; font-weight: 600; }
+.contact-label-icon { width: 36rpx; height: 36rpx; flex-shrink: 0; }
+.contact-value { font-size: 26rpx; color: var(--primary); font-weight: 600; }
+.contact-placeholder { font-size: 26rpx; color: var(--text-secondary); }
+.contact-hint { font-size: 22rpx; color: var(--text-secondary); margin-top: 6rpx; }
+
+/* ── 我的猫咪 ── */
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16rpx;
+}
+.section-title { display: flex; align-items: center; gap: 8rpx; font-size: 30rpx; font-weight: 700; }
+.section-title-icon { width: 34rpx; height: 34rpx; flex-shrink: 0; }
+.more-link { font-size: 26rpx; color: var(--primary); }
+.empty-hint { text-align: center; padding: 30rpx; color: var(--text-secondary); font-size: 24rpx; }
+.add-link {
+  text-align: center; color: var(--primary); font-size: 26rpx;
+  padding: 16rpx; font-weight: 600;
+}
+
+.mini-cat-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16rpx 0; border-bottom: 1rpx solid #F5F5F5;
+}
+.mini-cat-item:last-child { border-bottom: none; }
+.mini-cat-left { flex: 1; }
+.mini-cat-name { font-size: 28rpx; font-weight: 600; display: block; }
+.mini-cat-meta { font-size: 24rpx; color: var(--text-secondary); }
+.seeking-badge {
+  display: inline-block; background: #FFF3E0; color: #E65100;
+  padding: 2rpx 10rpx; border-radius: 6rpx; font-size: 20rpx; margin-top: 2rpx;
+}
+.action-icon { font-size: 32rpx; padding: 8rpx; }
+
+.adoption-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  line-height: 1;
+  padding: 3rpx 14rpx;
+  border-radius: 30rpx;
+  border: 1.5rpx solid var(--primary);
+  color: var(--primary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.adoption-toggle.cancel {
+  border-color: #E65100;
+  color: #E65100;
+  background: #FFF3E0;
+}
+
+/* ── 菜单卡片 ── */
+.menu-card { }
+.menu-row { display: flex; justify-content: space-between; align-items: center; font-size: 28rpx; }
+.menu-left { display: flex; align-items: center; gap: 10rpx; }
+.menu-icon-inline { width: 40rpx; height: 40rpx; flex-shrink: 0; }
+.menu-right { display: flex; align-items: center; gap: 12rpx; flex-shrink: 0; }
+.badge {
+  background: #FFF3E0; color: #E67E22;
+  font-size: 22rpx; padding: 4rpx 14rpx; border-radius: 20rpx;
+}
+.menu-hint { font-size: 22rpx; color: #CCC; margin-top: 6rpx; display: block; }
+.arrow { font-size: 32rpx; color: var(--text-secondary); }
+
+/* ── 按钮 ── */
+.btn-icon { width: 32rpx; height: 32rpx; vertical-align: middle; margin-right: 6rpx; }
+
+.btn-contact {
+  width: 100%; margin-top: 24rpx;
+  background: #FFF; border: 2rpx solid var(--primary); color: var(--primary);
+  border-radius: 14rpx; padding: 22rpx; text-align: center;
+  font-size: 30rpx; font-weight: 600;
+}
+.btn-contact.logout {
+  border-color: #CCC;
+  color: #999;
+}

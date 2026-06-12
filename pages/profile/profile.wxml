@@ -1,0 +1,122 @@
+<!-- 个人中心 Tab4 -->
+<view class="container">
+  <!-- 未登录 -->
+  <view wx:if="{{!isLoggedIn}}" class="empty-state" style="padding-top:200rpx;">
+    <text style="font-size:80rpx;">🐱</text>
+    <text style="font-size:32rpx;font-weight:700;margin-top:20rpx;">猫录助手</text>
+    <text style="margin-top:8rpx;">登录后管理猫咪档案</text>
+    <button class="btn-primary" style="margin-top:40rpx;width:400rpx;" bindtap="goLogin">微信一键登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <view wx:else>
+    <!-- ── 头部：头像 + 昵称 ── -->
+    <view class="user-header card">
+      <view class="avatar-placeholder">🐱</view>
+      <view class="user-names">
+        <!-- 暂时用占位，后续接入微信头像 -->
+        <text class="nickname">🐱 猫咪守护者</text>
+        <text class="uid">已登录</text>
+      </view>
+    </view>
+
+    <!-- ── 联系方式 ── -->
+    <view class="card contact-card" bindtap="onEditContact">
+      <view class="contact-row">
+        <view class="contact-label">
+          <image class="contact-label-icon" src="/images/icons/contact.png" mode="aspectFit"></image>
+          <text>联系方式（微信号）</text>
+        </view>
+        <text wx:if="{{wechatId}}" class="contact-value">{{wechatId}}</text>
+        <text wx:else class="contact-placeholder">点击设置</text>
+      </view>
+      <text class="contact-hint">领养人将看到此联系方式</text>
+    </view>
+
+    <!-- ── 我的猫咪（仅展示最近3只） ── -->
+    <view class="card">
+      <view class="section-header">
+        <view class="section-title">
+          <image class="section-title-icon" src="/images/icons/my-cat.png" mode="aspectFit"></image>
+          <text>我的猫咪 ({{totalCatCount}})</text>
+        </view>
+        <view wx:if="{{totalCatCount > 3}}" class="more-link" bindtap="goMyCats">查看全部 ›</view>
+      </view>
+
+      <view wx:if="{{catLoading}}">
+        <view class="skeleton" style="height:80rpx;margin-bottom:12rpx;" wx:for="{{[1,2]}}" wx:key="*this"></view>
+      </view>
+
+      <view wx:elif="{{recentCats.length === 0}}" class="empty-hint">
+        <text>还没有猫咪档案</text>
+        <view class="add-link" bindtap="goAddCat">+ 添加第一只猫咪</view>
+      </view>
+
+      <view wx:else>
+        <view class="mini-cat-item" wx:for="{{recentCats}}" wx:key="id">
+          <view class="mini-cat-left" bindtap="goEditCat" data-id="{{item.id}}">
+            <text class="mini-cat-name">{{item.name}}</text>
+            <text class="mini-cat-meta">{{item.breed}} · {{item.health_status}}</text>
+            <view wx:if="{{item.adoption_status === 'seeking'}}" class="seeking-badge">找领养中</view>
+          </view>
+          <view class="adoption-toggle {{item.adoption_status === 'seeking' ? 'cancel' : ''}}" bindtap="toggleAdoption" data-id="{{item.id}}">
+            {{item.adoption_status === 'seeking' ? '取消领养' : '发布领养'}}
+          </view>
+        </view>
+        <view wx:if="{{totalCatCount <= 3}}" class="add-link" bindtap="goAddCat">+ 添加猫咪</view>
+      </view>
+    </view>
+
+    <!-- ── 我的猫饭配方 ── -->
+    <view class="card menu-card" bindtap="goMyRecipes">
+      <view class="menu-row">
+        <view class="menu-left">
+          <image class="menu-icon-inline" src="/images/icons/recipe.png" mode="aspectFit"></image>
+          <text>我的猫饭配方</text>
+        </view>
+        <view class="menu-right">
+          <text wx:if="{{recipeCount > 0}}" class="badge">{{recipeCount}}篇</text>
+          <text class="arrow">›</text>
+        </view>
+      </view>
+      <text class="menu-hint">分享你家猫咪最爱的自制猫饭</text>
+    </view>
+
+    <!-- ── 我的协议 ── -->
+    <view class="card menu-card" bindtap="goMyAgreements">
+      <view class="menu-row">
+        <view class="menu-left">
+          <image class="menu-icon-inline" src="/images/icons/agreement.png" mode="aspectFit"></image>
+          <text>我的领养协议</text>
+        </view>
+        <view class="menu-right">
+          <text class="arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── 我的举报 ── -->
+    <view class="card menu-card" bindtap="goMyReports">
+      <view class="menu-row">
+        <view class="menu-left">
+          <image class="menu-icon-inline" src="/images/icons/warning.png" mode="aspectFit"></image>
+          <text>我的举报</text>
+        </view>
+        <view class="menu-right">
+          <text wx:if="{{reportCount > 0}}" class="badge">{{reportCount}}条</text>
+          <text class="arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── 客服 ── -->
+    <button class="btn-contact" open-type="contact" session-from="catlook">
+      <image class="btn-icon" src="/images/icons/service.png" mode="aspectFit"></image> 联系客服
+    </button>
+
+    <!-- ── 退出 ── -->
+    <button class="btn-contact logout" bindtap="onLogout">
+      <image class="btn-icon" src="/images/icons/logout.png" mode="aspectFit"></image> 退出登录
+    </button>
+  </view>
+</view>

@@ -1,0 +1,98 @@
+<!-- 食物查询 Tab3 -->
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <input class="search-input" placeholder="搜索食材名称..." value="{{searchText}}" bindinput="onSearch" />
+    <image class="search-icon" src="/images/icons/search.png" mode="aspectFit"></image>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="cat-scroll" scroll-x>
+    <view class="cat-tag {{activeCategory === item.key ? 'active' : ''}}"
+          wx:for="{{categories}}" wx:key="key"
+          bindtap="onCategoryTap" data-category="{{item.key}}">
+      {{item.label}}
+    </view>
+  </scroll-view>
+
+  <!-- 加载态 -->
+  <view wx:if="{{loading}}">
+    <view class="food-item skeleton" style="height:100rpx;" wx:for="{{[1,2,3,4,5]}}" wx:key="*this"></view>
+  </view>
+
+  <!-- 空状态 / 配方推荐 -->
+  <view wx:if="{{searchText === '' && activeCategory === ''}}">
+
+    <!-- 场景筛选标签 -->
+    <scroll-view class="cat-scroll" scroll-x wx:if="{{recipeScenes.length > 0}}">
+      <text class="scene-label">推荐配方</text>
+      <view class="cat-tag {{activeScene === item ? 'active' : ''}}"
+            wx:for="{{recipeScenes}}" wx:key="*this"
+            bindtap="onSceneTap" data-scene="{{item}}">
+        {{item}}
+      </view>
+    </scroll-view>
+
+    <!-- 配方卡片 -->
+    <view class="recipe-list">
+      <view class="recipe-card card"
+            wx:for="{{filteredRecipes}}"
+            wx:key="id"
+            bindtap="goDetail" data-id="{{item.id}}">
+        <!-- 发布者 -->
+        <view class="recipe-author" wx:if="{{item.author}}">
+          <view class="author-avatar">{{item.author.avatarUrl || '🐱'}}</view>
+          <text class="author-name">{{item.author.nickName || '猫友'}}</text>
+          <text class="author-date">{{item.createdAt || ''}}</text>
+        </view>
+
+        <view class="recipe-header">
+          <view class="recipe-title-row">
+            <image class="recipe-icon" src="/images/icons/recipe.png" mode="aspectFit"></image>
+            <view class="recipe-title-info">
+              <text class="recipe-name">{{item.name}}</text>
+              <view class="recipe-tags">
+                <text class="recipe-scene-tag">{{item.sceneTag || item.scene}}</text>
+                <text class="recipe-meta" wx:if="{{item.time}}">⏱ {{item.time}}</text>
+                <text class="recipe-meta" wx:if="{{item.difficulty}}">{{item.difficulty}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="recipe-ingredients">
+          <text class="ingredient-label">食材：</text>
+          <block wx:for="{{item.ingredients}}" wx:for-item="ing" wx:key="name">
+            <text class="ingredient-name">{{ing.name}} {{ing.amount}}</text>
+            <text wx:if="{{index < item.ingredients.length - 1}}" class="ingredient-plus"> + </text>
+          </block>
+        </view>
+        <view class="recipe-tip" wx:if="{{item.tips}}">
+          <image class="tip-icon" src="/images/icons/tips.png" mode="aspectFit"></image>
+          <text class="tip-text">{{item.tips}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无结果 -->
+  <view wx:elif="{{noResult}}" class="empty-state">
+    <text style="font-size:80rpx;">🔍</text>
+    <text>未找到匹配的食材</text>
+  </view>
+
+  <!-- 搜索结果列表 -->
+  <view wx:else class="food-list">
+    <view class="food-item card" wx:for="{{results}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="food-info">
+        <text class="food-name">{{item.name}}</text>
+        <text class="food-cat">{{item.categoryLabel}}</text>
+      </view>
+      <view class="food-level">
+        <text class="{{item.safety === 'safe' ? 'tag-safe' : item.safety === 'caution' ? 'tag-caution' : 'tag-danger'}}">
+          {{item.safetyLabel}}
+        </text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
+</view>

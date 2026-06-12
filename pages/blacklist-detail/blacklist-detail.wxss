@@ -1,0 +1,193 @@
+/* 黑名单详情页 */
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin: 30rpx 0 16rpx;
+  padding-left: 8rpx;
+  border-left: 6rpx solid var(--primary);
+}
+
+/* ── 声明 ── */
+.disclaimer {
+  background: #FFF3E0;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 24rpx;
+  color: #E65100;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+.btn-icon { width: 32rpx; height: 32rpx; vertical-align: middle; margin-right: 6rpx; }
+
+/* ── 信息表 ── */
+.info-card {
+  padding: 0;
+  overflow: hidden;
+}
+.info-row {
+  display: flex;
+  border-bottom: 1rpx solid var(--border);
+  padding: 24rpx;
+}
+.info-row:last-child {
+  border-bottom: none;
+}
+.info-label {
+  width: 160rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.info-value {
+  flex: 1;
+  font-size: 28rpx;
+}
+.info-value.blurred {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.role-tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+.role-tag.adopter {
+  background: #FFEBEE;
+  color: #C62828;
+}
+.role-tag.rescuer {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+
+/* ── 举报理由 ── */
+.reason-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.category-badge {
+  display: inline-block;
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 8rpx 24rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  align-self: flex-start;
+}
+.description-text {
+  font-size: 28rpx;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* 证据图片网格 */
+.evidence-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+.evidence-img {
+  width: 210rpx;
+  height: 210rpx;
+  border-radius: 8rpx;
+  background: #F0F0F0;
+}
+
+/* ── 证实区域 ── */
+.confirm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+.confirm-item {
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.confirm-item:last-child {
+  border-bottom: none;
+}
+.confirm-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.confirm-info {
+  flex: 1;
+  font-size: 26rpx;
+  line-height: 1.6;
+}
+.confirm-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.confirm-note {
+  color: var(--text-secondary);
+}
+.no-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+.confirm-btn-row {
+  display: flex;
+  gap: 16rpx;
+}
+.confirm-btn-row .btn-primary,
+.confirm-btn-row .btn-outline {
+  flex: 1;
+}
+.share-detail-btn {
+  margin: 0;
+  font-size: 28rpx;
+}
+.share-detail-btn::after {
+  border: none;
+}
+
+/* 证实表单 */
+.confirm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  background: var(--bg);
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+.confirm-input {
+  height: 72rpx;
+  background: #FFF;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+}
+.confirm-textarea {
+  height: 120rpx;
+  background: #FFF;
+  border-radius: 8rpx;
+  padding: 16rpx 20rpx;
+  font-size: 26rpx;
+}
+.confirm-form-btns {
+  display: flex;
+  gap: 16rpx;
+}
+.confirm-form-btns .btn-primary,
+.confirm-form-btns .btn-outline {
+  flex: 1;
+}

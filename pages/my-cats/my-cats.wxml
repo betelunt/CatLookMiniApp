@@ -1,0 +1,39 @@
+<!-- 我的猫咪完整列表 -->
+<view class="container">
+  <view class="top-bar">
+    <text class="title">全部猫咪 ({{cats.length}})</text>
+    <view class="add-btn" bindtap="goAdd">+ 添加</view>
+  </view>
+
+  <view wx:if="{{loading}}">
+    <view class="skeleton" style="height:120rpx;margin-bottom:16rpx;" wx:for="{{[1,2,3]}}" wx:key="*this"></view>
+  </view>
+
+  <view wx:elif="{{cats.length === 0}}" class="empty-state">
+    <text style="font-size:80rpx;">🐱</text>
+    <text>还没有猫咪档案</text>
+  </view>
+
+  <view wx:else>
+    <view class="cat-item card" wx:for="{{cats}}" wx:key="id">
+      <image wx:if="{{item.photo_url}}" class="my-cat-thumb" src="{{item.photo_url}}" mode="aspectFill" />
+      <view wx:else class="my-cat-thumb placeholder">🐱</view>
+      <view class="cat-info">
+        <text class="cat-name">{{item.name}}</text>
+        <view class="cat-tags">
+          <text class="meta">{{item.breed}}</text>
+          <text class="status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status}}</text>
+          <text wx:if="{{item.city}}">📍 {{item.city}}</text>
+        </view>
+        <view wx:if="{{item.adoption_status === 'seeking'}}" class="seeking-badge">🔍 找领养中</view>
+      </view>
+      <view class="cat-actions">
+        <image class="action-icon" src="/images/icons/edit.png" mode="aspectFit" bindtap="goEdit" data-id="{{item.id}}"></image>
+        <view class="adoption-toggle {{item.adoption_status === 'seeking' ? 'cancel' : ''}}" bindtap="toggleAdoption" data-id="{{item.id}}">
+          {{item.adoption_status === 'seeking' ? '取消领养' : '发布领养'}}
+        </view>
+        <image class="action-icon" src="/images/icons/clear.png" mode="aspectFit" bindtap="deleteCat" data-id="{{item.id}}"></image>
+      </view>
+    </view>
+  </view>
+</view>

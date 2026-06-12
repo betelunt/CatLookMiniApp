@@ -1,0 +1,189 @@
+<!-- 黑名单举报表单 - 3步 -->
+<view class="container">
+
+  <!-- 步骤指示器 -->
+  <view class="steps">
+    <view class="step {{step >= 1 ? 'active' : ''}} {{step > 1 ? 'done' : ''}}">
+      <view class="step-num">1</view>
+      <text class="step-label">失信人信息</text>
+    </view>
+    <view class="step-line {{step >= 2 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 2 ? 'active' : ''}} {{step > 2 ? 'done' : ''}}">
+      <view class="step-num">2</view>
+      <text class="step-label">举报理由</text>
+    </view>
+    <view class="step-line {{step >= 3 ? 'active' : ''}}"></view>
+    <view class="step {{step >= 3 ? 'active' : ''}}">
+      <view class="step-num">3</view>
+      <text class="step-label">联系方式</text>
+    </view>
+  </view>
+
+  <!-- ═══════════ Step 1: 失信人信息 ═══════════ -->
+  <view wx:if="{{step === 1}}" class="step-body">
+
+    <!-- 身份 -->
+    <view class="form-group">
+      <view class="form-label">身份 <text class="required">*</text></view>
+      <view class="radio-group">
+        <view
+          class="radio-item {{role === 'adopter' ? 'checked' : ''}}"
+          bindtap="onRoleChange"
+          data-value="adopter"
+        >领养人</view>
+        <view
+          class="radio-item {{role === 'rescuer' ? 'checked' : ''}}"
+          bindtap="onRoleChange"
+          data-value="rescuer"
+        >送养人</view>
+      </view>
+    </view>
+
+    <!-- 性别 -->
+    <view class="form-group">
+      <view class="form-label">性别 <text class="required">*</text></view>
+      <view class="radio-group">
+        <view class="radio-item {{gender === 'male' ? 'checked' : ''}}" bindtap="onGenderSelect" data-gender="male">男</view>
+        <view class="radio-item {{gender === 'female' ? 'checked' : ''}}" bindtap="onGenderSelect" data-gender="female">女</view>
+      </view>
+    </view>
+
+    <!-- 真实姓名 -->
+    <view class="form-group">
+      <view class="form-label">真实姓名 <text class="optional">选填</text></view>
+      <input class="form-input" placeholder="如知晓请填写" value="{{realName}}" bindinput="onInput" data-field="realName" />
+    </view>
+
+    <!-- 身份证号 -->
+    <view class="form-group">
+      <view class="form-label">身份证号 <text class="optional">选填</text></view>
+      <input class="form-input" placeholder="如知晓请填写" value="{{idNumber}}" bindinput="onInput" data-field="idNumber" type="idcard" />
+    </view>
+
+    <!-- 微信昵称 -->
+    <view class="form-group">
+      <view class="form-label">微信昵称 <text class="optional">选填</text></view>
+      <input class="form-input" placeholder="对方的微信昵称" value="{{wechatNickname}}" bindinput="onInput" data-field="wechatNickname" />
+    </view>
+
+    <!-- 手机号 / 微信号 -->
+    <view class="form-group">
+      <view class="form-label">手机号 / 微信号 <text class="required">*</text></view>
+      <view class="dual-input">
+        <input class="form-input half" placeholder="手机号" value="{{phone}}" bindinput="onInput" data-field="phone" type="number" />
+        <input class="form-input half" placeholder="微信号" value="{{wechatId}}" bindinput="onInput" data-field="wechatId" />
+      </view>
+      <view class="form-hint">手机号和微信号至少填写一项</view>
+    </view>
+
+    <!-- 所在城市 -->
+    <view class="form-group">
+      <view class="form-label">所在城市 <text class="required">*</text></view>
+      <picker mode="region" level="city" bindchange="onCityChange">
+        <view class="form-input picker-val">{{city || '点击选择省/市'}}</view>
+      </picker>
+    </view>
+
+    <!-- 详细地址 -->
+    <view class="form-group">
+      <view class="form-label">详细地址 <text class="optional">选填</text></view>
+      <input class="form-input" placeholder="如知晓请填写" value="{{address}}" bindinput="onInput" data-field="address" />
+    </view>
+
+  </view>
+
+  <!-- ═══════════ Step 2: 举报理由 ═══════════ -->
+  <view wx:if="{{step === 2}}" class="step-body">
+
+    <!-- 快捷分类 -->
+    <view class="form-group">
+      <view class="form-label">举报分类 <text class="required">*</text></view>
+      <view class="tag-grid">
+        <view
+          wx:for="{{categories}}"
+          wx:key="*this"
+          class="category-tag {{category === item ? 'selected' : ''}}"
+          bindtap="onCategorySelect"
+          data-cat="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 详细描述 -->
+    <view class="form-group">
+      <view class="form-label">详细描述 <text class="required">*</text></view>
+      <textarea
+        class="form-textarea"
+        placeholder="请详细描述事件经过、时间地点、涉及人员等。至少20个字，越详细越有助于核实..."
+        value="{{description}}"
+        bindinput="onInput"
+        data-field="description"
+        maxlength="2000"
+      />
+      <view class="form-hint">已输入 {{description.length}} 字（至少20字）</view>
+    </view>
+
+    <!-- 上传证据 -->
+    <view class="form-group">
+      <view class="form-label">上传证据 <text class="required">*</text></view>
+      <view class="evidence-upload">
+        <view class="evidence-preview" wx:for="{{evidenceFiles}}" wx:key="*this">
+          <image class="preview-img" src="{{item}}" mode="aspectFill" />
+          <view class="remove-btn" bindtap="onRemoveImage" data-idx="{{index}}">✕</view>
+        </view>
+        <view wx:if="{{evidenceFiles.length < 9}}" class="add-btn" bindtap="onChooseImage">
+          <text style="font-size:48rpx;color:var(--text-secondary);">+</text>
+          <text style="font-size:22rpx;color:var(--text-secondary);">{{evidenceFiles.length}}/9</text>
+        </view>
+      </view>
+      <view class="form-hint">请上传聊天记录截图等证据，最多9张</view>
+    </view>
+
+  </view>
+
+  <!-- ═══════════ Step 3: 联系方式 ═══════════ -->
+  <view wx:if="{{step === 3}}" class="step-body">
+
+    <!-- 提示 -->
+    <view class="contact-notice">
+      <text style="font-size:40rpx;margin-bottom:12rpx;">⚠️</text>
+      <text style="font-weight:700;margin-bottom:8rpx;">以下信息请务必填写</text>
+      <text>我们会联系您进行核实，如果联系不上，您举报的信息将会自动作废。</text>
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">您的姓名 <text class="required">*</text></view>
+      <input class="form-input" placeholder="请输入您的真实姓名" value="{{reporterName}}" bindinput="onInput" data-field="reporterName" />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">您的微信号 <text class="required">*</text></view>
+      <input class="form-input" placeholder="平台将通过微信号联系您" value="{{reporterWx}}" bindinput="onInput" data-field="reporterWx" />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label">您的手机号 <text class="required">*</text></view>
+      <input class="form-input" placeholder="备用联系方式" value="{{reporterPhone}}" bindinput="onInput" data-field="reporterPhone" type="number" />
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-area">
+      <view wx:if="{{!submitting}}" class="btn-primary submit-btn" bindtap="onSubmit">
+        提交举报
+      </view>
+      <view wx:else class="btn-primary submit-btn disabled">
+        提交中...
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ── 底部导航按钮 ── -->
+  <view class="step-nav">
+    <view wx:if="{{step > 1}}" class="btn-outline" bindtap="onPrev">上一步</view>
+    <view wx:if="{{step === 1}}" class="btn-placeholder"></view>
+
+    <view wx:if="{{step < 3}}" class="btn-primary" bindtap="onNext">下一步</view>
+  </view>
+
+</view>

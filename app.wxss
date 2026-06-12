@@ -1,0 +1,126 @@
+/* ── 猫录助手 全局样式 ────────────────────────────────── */
+
+page {
+  --primary: #FF8C42;
+  --primary-dark: #E67A30;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --danger: #F44336;
+  --bg: #F8F8F8;
+  --card: #FFFFFF;
+  --text: #333333;
+  --text-secondary: #999999;
+  --border: #EEEEEE;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+/* ── 通用组件 ── */
+
+.container {
+  padding: 24rpx;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+/* 按钮 */
+.btn-primary {
+  background: var(--primary);
+  color: #FFF;
+  border-radius: 12rpx;
+  padding: 20rpx 40rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.btn-outline {
+  background: #FFF;
+  color: var(--primary);
+  border: 2rpx solid var(--primary);
+  border-radius: 12rpx;
+  padding: 20rpx 40rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  padding: 20rpx 40rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+/* 安全标识 */
+.tag-safe {
+  background: #E8F5E9;
+  color: #2E7D32;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+.tag-caution {
+  background: #FFF3E0;
+  color: #E65100;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+.tag-danger {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+/* 骨架屏 */
+.skeleton {
+  background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 8rpx;
+}
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 60rpx;
+}
+.empty-state image {
+  width: 240rpx;
+  height: 240rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.6;
+}
+.empty-state text {
+  color: var(--text-secondary);
+  font-size: 28rpx;
+}
+
+/* 加载更多 / 没有更多 */
+.meta-footer {
+  text-align: center;
+  padding: 30rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}

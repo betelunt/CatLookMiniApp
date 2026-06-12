@@ -1,0 +1,11 @@
+{
+  "name": "process-agreement",
+  "version": "1.0.0",
+  "description": "协议回传 → 模糊处理 → 双文件存储",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^2.6.3",
+    "node-fetch": "^2.6.7",
+    "sharp": "^0.32.6"
+  }
+}

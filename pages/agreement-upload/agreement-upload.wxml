@@ -1,0 +1,29 @@
+<!-- 协议回传 -->
+<view class="container">
+  <view class="card" style="text-align:center;">
+    <text style="font-size:64rpx;display:block;margin-bottom:20rpx;">
+      {{uploaded ? '✅' : '📤'}}
+    </text>
+    <text class="title" wx:if="{{!uploaded}}">回传已签署的协议</text>
+    <text class="title" wx:else>回传成功</text>
+    <text class="desc" style="margin:20rpx 0;display:block;">
+      <block wx:if="{{!uploaded}}">
+        请拍照或选择已签署完成的协议扫描件。<br/>
+        上传后系统会自动对图片进行模糊处理，<br/>
+        保护双方隐私信息。<br/>
+        <text style="color:var(--primary);">高清源文件仅您（救助人）可下载。</text>
+      </block>
+      <block wx:else>
+        协议已安全存档。<br/>
+        平台展示为模糊版本，保护隐私。<br/>
+        您可在「我的」页面随时下载高清源文件。
+      </block>
+    </text>
+    <button wx:if="{{!uploaded}}" class="btn-primary" bindtap="onChooseAndUpload" loading="{{uploading}}">
+      📷 拍照/选择文件上传
+    </button>
+    <button wx:else class="btn-outline" bindtap="onChooseAndUpload">
+      重新上传
+    </button>
+  </view>
+</view>

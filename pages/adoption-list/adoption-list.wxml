@@ -1,0 +1,91 @@
+<!-- 猫咪领养列表 Tab2 -->
+<view class="container">
+  <!-- 筛选栏：城市 | 品种 | 搜索 -->
+  <view class="filter-bar">
+    <picker mode="selector" range="{{cities}}" bindchange="onCityChange">
+      <view class="filter-pill {{cityFilter ? 'active' : ''}}">{{cityFilter || '城市'}} ▾</view>
+    </picker>
+    <picker mode="selector" range="{{breedOptions}}" bindchange="onBreedChange">
+      <view class="filter-pill {{breedFilter ? 'active' : ''}}">{{breedFilter || '品种'}} ▾</view>
+    </picker>
+    <view class="search-box">
+      <image class="search-prefix-icon" src="/images/icons/search.png" mode="aspectFit"></image>
+      <input class="search-input" placeholder="搜索" value="{{searchKeyword}}" bindinput="onSearchInput" confirm-type="search" />
+    </view>
+  </view>
+
+  <!-- 激活标签行 -->
+  <view wx:if="{{cityFilter || breedFilter || searchKeyword}}" class="active-tags">
+    <view wx:if="{{cityFilter}}" class="tag-chip" bindtap="clearFilter" data-key="cityFilter">{{cityFilter}} ✕</view>
+    <view wx:if="{{breedFilter}}" class="tag-chip" bindtap="clearFilter" data-key="breedFilter">{{breedFilter}} ✕</view>
+    <view wx:if="{{searchKeyword}}" class="tag-chip" bindtap="clearFilter" data-key="searchKeyword">"{{searchKeyword}}" ✕</view>
+  </view>
+
+  <!-- 加载骨架屏（双列） -->
+  <view wx:if="{{loading}}" class="waterfall">
+    <view class="col">
+      <view class="skeleton card waterfall-card" wx:for="{{[1,3,5]}}" wx:key="*this"></view>
+    </view>
+    <view class="col">
+      <view class="skeleton card waterfall-card" wx:for="{{[2,4]}}" wx:key="*this"></view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{leftCats.length === 0 && rightCats.length === 0}}" class="empty-state">
+    <text style="font-size:80rpx;margin-bottom:20rpx;">🏠</text>
+    <text wx:if="{{cityFilter || breedFilter || searchKeyword}}">没有找到匹配的猫咪</text>
+    <text wx:else>暂无可领养的猫咪</text>
+  </view>
+
+  <!-- 瀑布流双列 -->
+  <view wx:else class="waterfall">
+    <view class="col">
+      <view class="adopt-card card" wx:for="{{leftCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
+        <view wx:else class="card-photo-placeholder">🐱</view>
+        <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
+        <view class="card-body">
+          <view class="card-row">
+            <text class="card-name">{{item.name}}</text>
+            <text class="card-status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status || '未知'}}</text>
+          </view>
+          <view class="card-meta-row">
+            <view wx:if="{{item.city}}" class="meta-item"><image class="meta-icon" src="/images/icons/location.png" mode="aspectFit"></image>{{item.city}}</view>
+            <text wx:if="{{item.age}}" class="meta-sep">·</text>
+            <text wx:if="{{item.age}}" class="meta-item">{{item.age}}岁</text>
+            <text wx:if="{{item.gender}}" class="meta-sep">·</text>
+            <image wx:if="{{item.gender}}" class="gender-icon" src="/images/icons/{{item.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image>
+            <text class="meta-sep">·</text>
+            <text class="meta-item">{{item.is_neutered ? '已绝育' : '未绝育'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="col">
+      <view class="adopt-card card" wx:for="{{rightCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
+        <view wx:else class="card-photo-placeholder">🐱</view>
+        <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
+        <view class="card-body">
+          <view class="card-row">
+            <text class="card-name">{{item.name}}</text>
+            <text class="card-status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status || '未知'}}</text>
+          </view>
+          <view class="card-meta-row">
+            <view wx:if="{{item.city}}" class="meta-item"><image class="meta-icon" src="/images/icons/location.png" mode="aspectFit"></image>{{item.city}}</view>
+            <text wx:if="{{item.age}}" class="meta-sep">·</text>
+            <text wx:if="{{item.age}}" class="meta-item">{{item.age}}岁</text>
+            <text wx:if="{{item.gender}}" class="meta-sep">·</text>
+            <image wx:if="{{item.gender}}" class="gender-icon" src="/images/icons/{{item.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image>
+            <text class="meta-sep">·</text>
+            <text class="meta-item">{{item.is_neutered ? '已绝育' : '未绝育'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 黑名单浮窗 -->
+  <image class="blacklist-float" src="/images/icons/blacklist-float.png" mode="widthFix" bindtap="goBlacklist"></image>
+</view>

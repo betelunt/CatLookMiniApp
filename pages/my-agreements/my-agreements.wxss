@@ -1,0 +1,4 @@
+.agreement-item { display: flex; justify-content: space-between; align-items: center; }
+.agreement-title { font-size: 30rpx; font-weight: 600; display: block; margin-bottom: 4rpx; }
+.agreement-date { font-size: 24rpx; color: var(--text-secondary); }
+.status { font-size: 40rpx; }

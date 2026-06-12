@@ -1,0 +1,43 @@
+<!-- 猫咪领养详情 -->
+<view class="container" wx:if="{{cat}}">
+  <image wx:if="{{cat.photo_url}}" class="hero-photo" src="{{cat.photo_url}}" mode="aspectFill" />
+  <view wx:else class="hero-placeholder">🐱</view>
+
+  <view wx:if="{{cat.archive_code}}" class="detail-archive-code">档案编号：{{cat.archive_code}}</view>
+
+  <view class="card">
+    <view class="name-row">
+      <text class="cat-name">{{cat.name}}</text>
+      <text class="breed">{{cat.breed || '未知'}}</text>
+    </view>
+    <view class="info-grid">
+      <view class="info-item"><text class="info-label">状态</text><text style="color:{{statusColors[cat.health_status]}}">{{cat.health_status}}</text></view>
+      <view class="info-item"><text class="info-label">城市</text><text>{{cat.city || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">年龄</text><text>{{cat.age || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">性别</text><image wx:if="{{cat.gender}}" class="gender-icon-detail" src="/images/icons/{{cat.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image><text wx:else>未知</text></view>
+      <view class="info-item"><text class="info-label">绝育</text><text>{{cat.is_neutered ? '是' : '否'}}</text></view>
+    </view>
+  </view>
+
+  <view wx:if="{{cat.personality}}" class="card">
+    <text class="section-title">性格特点</text><text>{{cat.personality}}</text>
+  </view>
+
+  <view wx:if="{{cat.description || cat.appearance}}" class="card">
+    <text class="section-title">外貌特征</text><text>{{cat.description || cat.appearance}}</text>
+  </view>
+
+  <view wx:if="{{cat.special_notes}}" class="card special-notes-card">
+    <text class="section-title">💡 特别提示</text><text>{{cat.special_notes}}</text>
+  </view>
+
+  <view class="action-btns">
+    <button class="btn-primary" bindtap="onApplyAdopt"><image class="btn-icon" src="/images/icons/adopt.png" mode="aspectFit"></image> 申请领养</button>
+  </view>
+  <view class="action-btns secondary">
+    <button class="btn-outline" bindtap="onDownloadAgreement"><image class="btn-icon" src="/images/icons/agreement.png" mode="aspectFit"></image> 下载协议模板</button>
+    <button class="btn-outline" bindtap="onShareCard"><image class="btn-icon" src="/images/icons/share.png" mode="aspectFit"></image> 分享卡片</button>
+  </view>
+</view>
+
+<view wx:elif="{{!loading}}" class="empty-state"><text>猫咪不存在</text></view>

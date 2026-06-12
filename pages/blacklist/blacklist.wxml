@@ -1,0 +1,81 @@
+<!-- 黑名单主页 -->
+<view class="container">
+
+  <!-- 操作按钮栏 -->
+  <view class="action-bar">
+    <view class="action-btn" bindtap="goReport">
+      <image class="action-icon-img" src="/images/icons/agreement.png" mode="aspectFit"></image>
+      <text>我要举报</text>
+    </view>
+    <view class="action-btn" bindtap="onToggleSearch">
+      <image class="action-icon-img" src="/images/icons/search.png" mode="aspectFit"></image>
+      <text>{{showSearch ? '取消' : '查询'}}</text>
+    </view>
+    <button class="action-btn share-btn" open-type="share">
+      <image class="action-icon-img" src="/images/icons/share.png" mode="aspectFit"></image>
+      <text>转发</text>
+    </button>
+  </view>
+
+  <!-- 搜索框 -->
+  <view wx:if="{{showSearch}}" class="search-box card">
+    <input
+      class="search-input"
+      placeholder="输入昵称/手机号/微信号搜索..."
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearch"
+    />
+    <view class="search-btn-inner" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- 官方声明 -->
+  <view class="disclaimer">
+    <text>⚠️ 以下信息由网友在各平台收集发布，资料来自领养人、送养人及媒体曝光等渠道。请大家诚信交流，共建健康领养环境。</text>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{activeTab === 'adopter' ? 'active' : ''}}"
+      data-tab="adopter"
+      bindtap="onTabChange"
+    >领养人黑名单</view>
+    <view
+      class="tab-item {{activeTab === 'rescuer' ? 'active' : ''}}"
+      data-tab="rescuer"
+      bindtap="onTabChange"
+    >送养人黑名单</view>
+  </view>
+
+  <!-- 加载态 -->
+  <view wx:if="{{loading}}">
+    <view class="skeleton card" style="height:100rpx;" wx:for="{{[1,2,3]}}" wx:key="*this"></view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{reports.length === 0}}" class="empty-state">
+    <text style="font-size:80rpx;margin-bottom:20rpx;">✅</text>
+    <text>暂无{{activeTab === 'adopter' ? '领养人' : '送养人'}}黑名单记录</text>
+    <text style="font-size:24rpx;margin-top:10rpx;">这是好消息！</text>
+  </view>
+
+  <!-- 黑名单列表 -->
+  <view wx:else>
+    <!-- 表头 -->
+    <view class="list-header">
+      <text class="col-name">昵称</text>
+      <text class="col-reason">举报原因</text>
+      <text class="col-action">详情</text>
+    </view>
+
+    <view class="list-row card" wx:for="{{reports}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <text class="col-name">{{item.wechat_nickname || item.real_name || '未知'}}</text>
+      <text class="col-reason">
+        <text class="reason-tag">{{item.category}}</text>
+      </text>
+      <text class="col-action link">查看 ></text>
+    </view>
+  </view>
+
+</view>

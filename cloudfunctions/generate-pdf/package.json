@@ -1,0 +1,11 @@
+{
+  "name": "generate-pdf",
+  "version": "1.0.0",
+  "description": "生成领养协议 PDF 模板",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^2.6.3",
+    "node-fetch": "^2.6.7",
+    "pdf-lib": "^1.17.1"
+  }
+}

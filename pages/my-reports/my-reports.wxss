@@ -1,0 +1,68 @@
+/* 我的举报 */
+
+.report-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.report-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.report-target {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.target-role {
+  font-size: 22rpx;
+  background: #F5F5F5;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  color: var(--text-secondary);
+}
+.target-name {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.report-status {
+  color: #FFF;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.report-mid {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.report-category {
+  font-size: 24rpx;
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+}
+.report-city {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.report-desc {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.report-time {
+  font-size: 22rpx;
+  color: #CCC;
+}

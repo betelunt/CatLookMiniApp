@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>猫录助手 - Tab 图标生成器</title>
+<style>
+  body { font-family: system-ui; max-width: 600px; margin: 40px auto; padding: 20px; }
+  h1 { text-align: center; color: #333; }
+  .icon-row { display: flex; align-items: center; margin: 16px 0; padding: 12px; border: 1px solid #eee; border-radius: 8px; }
+  .icon-row canvas { margin-right: 16px; border: 1px dashed #ccc; }
+  .icon-row .info { flex: 1; }
+  .icon-row .name { font-weight: bold; font-size: 16px; }
+  .icon-row .size { color: #666; font-size: 13px; }
+  button { padding: 8px 16px; border: none; border-radius: 6px; background: #07C160; color: #fff; cursor: pointer; font-size: 14px; }
+  button:hover { background: #06AD56; }
+  .note { margin-top: 30px; padding: 16px; background: #fff3cd; border-radius: 8px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>🐱 猫录助手 Tab 图标</h1>
+<p style="text-align:center;color:#666">点击下载按钮保存到 <code>images/</code> 目录</p>
+
+<div id="icons"></div>
+
+<div class="note">
+  <strong>📌 使用说明：</strong><br>
+  1. 点击每个图标的「下载」按钮保存 PNG<br>
+  2. 将文件放到 <code>images/tab-xxx.png</code> 和 <code>images/tab-xxx-active.png</code><br>
+  3. 如需更好效果，可从 <a href="https://www.iconfont.cn" target="_blank">iconfont.cn</a> 搜索免费图标替换<br>
+  4. 微信要求 Tab 图标 40x40 px，建议准备 81x81 (@2x) 版本
+</div>
+
+<script>
+const icons = [
+  { name: '猫咪档案', file: 'tab-cats',        icon: '🐱', color: '#FF9500', bg: '#FFF3E0' },
+  { name: '猫咪领养', file: 'tab-adoption',    icon: '🏠', color: '#FF6B6B', bg: '#FFE8E8' },
+  { name: '食物查询', file: 'tab-food',        icon: '🍖', color: '#4ECDC4', bg: '#E0F7F6' },
+  { name: '我的',     file: 'tab-profile',     icon: '👤', color: '#6366F1', bg: '#EEEDFD' },
+];
+
+const container = document.getElementById('icons');
+
+icons.forEach(({name, file, icon, color, bg}) => {
+  const row = document.createElement('div');
+  row.className = 'icon-row';
+
+  // 正常态
+  const canvas = document.createElement('canvas');
+  canvas.width = 81; canvas.height = 81;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 81, 81);
+  ctx.font = '36px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(icon, 40, 42);
+
+  const info = document.createElement('div');
+  info.className = 'info';
+  info.innerHTML = `<div class="name">${icon} ${name}</div><div class="size">tab-${file}.png (81×81)</div>`;
+
+  const btn = document.createElement('button');
+  btn.textContent = '下载';
+  btn.onclick = () => {
+    const a = document.createElement('a');
+    a.download = `tab-${file}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  };
+
+  row.appendChild(canvas);
+  row.appendChild(info);
+  row.appendChild(btn);
+  container.appendChild(row);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Dependencies
+node_modules/
+
+# Superpowers internal
+.superpowers/
+
+# WeChat private config (personal appid etc)
+project.private.config.json
+
+# Logs
+*.log
+
+# Local config (contains tokens, do not push)
+CLAUDE.md
+CLAUDE.local.md

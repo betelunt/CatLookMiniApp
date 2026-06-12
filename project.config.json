@@ -1,0 +1,50 @@
+{
+  "description": "猫录助手微信小程序",
+  "compileType": "miniprogram",
+  "appid": "wx28bfc44bb31bd451",
+  "projectname": "catlook",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "minifyWXML": true,
+    "uglifyFileName": false,
+    "enhance": true,
+    "coverView": true,
+    "urlCheck": true,
+    "scopeDataCheck": false,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "autoAudits": false,
+    "newFeature": false,
+    "uploadWithSourceMap": true,
+    "useIsolateContext": true,
+    "nodeModules": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "showES6CompileOption": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useCompilerPlugins": false
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "condition": {}
+}

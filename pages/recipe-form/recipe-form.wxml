@@ -1,0 +1,77 @@
+<!-- 创建 / 编辑猫饭配方 -->
+<view class="container">
+
+  <!-- 配方名称 -->
+  <view class="form-group">
+    <text class="label">配方名称 *</text>
+    <input class="input" placeholder="如：鸡肉胡萝卜饭" value="{{form.name}}" bindinput="onInput" data-field="name" />
+  </view>
+
+  <!-- 适用场景 -->
+  <view class="form-group">
+    <text class="label">适用场景 *</text>
+    <picker mode="selector" range="{{scenes}}" bindchange="onSceneChange">
+      <view class="picker-value">{{form.scene || '请选择场景'}}</view>
+    </picker>
+  </view>
+
+  <!-- 场景标签 + 耗时 + 难度 -->
+  <view class="form-row">
+    <view class="form-group half">
+      <text class="label">耗时</text>
+      <input class="input" placeholder="如：15分钟" value="{{form.time}}" bindinput="onInput" data-field="time" />
+    </view>
+    <view class="form-group half">
+      <text class="label">难度</text>
+      <picker mode="selector" range="{{['简单', '中等', '复杂']}}" bindchange="onDifficultyChange">
+        <view class="picker-value">{{form.difficulty}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 食材清单（动态行） -->
+  <view class="form-group">
+    <view class="section-label">
+      <text class="label">食材清单 *</text>
+      <text class="add-btn" bindtap="addIngredient">+ 添加食材</text>
+    </view>
+    <view class="ingredient-row" wx:for="{{form.ingredients}}" wx:key="index">
+      <input class="input ing-name" placeholder="食材名" value="{{item.name}}" bindinput="onIngredientInput" data-idx="{{index}}" data-field="name" />
+      <input class="input ing-amount" placeholder="用量" value="{{item.amount}}" bindinput="onIngredientInput" data-idx="{{index}}" data-field="amount" />
+      <text wx:if="{{form.ingredients.length > 1}}" class="remove-btn" bindtap="removeIngredient" data-idx="{{index}}">✕</text>
+    </view>
+  </view>
+
+  <!-- 制作步骤（动态行） -->
+  <view class="form-group">
+    <view class="section-label">
+      <text class="label">制作步骤 *</text>
+      <text class="add-btn" bindtap="addStep">+ 添加步骤</text>
+    </view>
+    <view class="step-row" wx:for="{{form.steps}}" wx:key="index">
+      <text class="step-num">{{index + 1}}</text>
+      <textarea class="textarea step-input" placeholder="第{{index + 1}}步..." value="{{item}}" bindinput="onStepInput" data-idx="{{index}}" />
+      <text wx:if="{{form.steps.length > 1}}" class="remove-btn" bindtap="removeStep" data-idx="{{index}}">✕</text>
+    </view>
+  </view>
+
+  <!-- 小贴士 -->
+  <view class="form-group">
+    <text class="label">小贴士</text>
+    <textarea class="textarea" placeholder="如：鸡肉必须全熟、不加调味料、适合肠胃敏感的猫咪..." value="{{form.tips}}" bindinput="onInput" data-field="tips" />
+  </view>
+
+  <!-- ⚠️ 免责声明 -->
+  <view class="disclaimer">
+    <text class="disclaimer-icon">⚠️</text>
+    <text class="disclaimer-text">
+      发布即表示您确认本配方经过自家猫咪实际食用验证。其他猫友请根据自家猫咪情况判断适用性，如有疑问请咨询兽医。本配方为用户个人分享，不代表平台建议。
+    </text>
+  </view>
+
+  <!-- 提交 -->
+  <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+    {{isEdit ? '保存修改' : '🍳 发布配方'}}
+  </button>
+  <view style="height:60rpx;"></view>
+</view>

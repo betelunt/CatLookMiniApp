@@ -1,0 +1,135 @@
+/* 黑名单主页 */
+
+/* ── 操作按钮栏 ── */
+.action-bar {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 20rpx 16rpx;
+  font-size: 24rpx;
+  color: var(--text);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+.action-btn.share-btn {
+  margin: 0;
+  padding: 20rpx 16rpx;
+  line-height: 1.4;
+  border: none;
+  background: var(--card);
+  font-size: 24rpx;
+}
+.action-btn.share-btn::after {
+  border: none;
+}
+.action-icon {
+  font-size: 36rpx;
+}
+.action-icon-img {
+  width: 40rpx; height: 40rpx;
+}
+
+/* ── 搜索框 ── */
+.search-box {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  font-size: 28rpx;
+  background: var(--bg);
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+}
+.search-btn-inner {
+  background: var(--primary);
+  color: #FFF;
+  padding: 14rpx 28rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  white-space: nowrap;
+}
+
+/* ── 声明 ── */
+.disclaimer {
+  background: #FFF8E1;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  color: #8D6E00;
+  line-height: 1.6;
+}
+
+/* ── Tab 切换 ── */
+.tab-bar {
+  display: flex;
+  background: var(--card);
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
+}
+.tab-item.active {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom-color: var(--primary);
+}
+
+/* ── 列表表头 ── */
+.list-header {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.col-name { flex: 2; }
+.col-reason { flex: 2; }
+.col-action { flex: 1; text-align: right; }
+
+/* ── 列表行 ── */
+.list-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+}
+.list-row .col-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.list-row .col-reason {
+  display: flex;
+  align-items: center;
+}
+.reason-tag {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  white-space: nowrap;
+}
+.link { color: var(--primary); font-size: 26rpx; }

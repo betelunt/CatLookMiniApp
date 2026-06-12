@@ -1,0 +1,21 @@
+<!-- 登录页 -->
+<view class="container login-container">
+  <view class="login-card">
+    <image src="/images/logo.svg" mode="aspectFit" class="logo" />
+    <text class="app-name">猫录助手</text>
+    <text class="app-desc">猫咪档案 · 领养 · 营养查询</text>
+
+    <view class="privacy-notice">
+      <text>登录即表示您同意</text>
+      <text class="link">《用户协议》</text>
+      <text>和</text>
+      <text class="link">《隐私政策》</text>
+    </view>
+
+    <button class="btn-primary login-btn" bindtap="onLogin" loading="{{loading}}" disabled="{{loading}}">
+      微信一键登录
+    </button>
+
+    <text class="tip">登录后可使用猫咪档案和领养功能</text>
+  </view>
+</view>

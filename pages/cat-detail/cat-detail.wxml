@@ -1,0 +1,44 @@
+<!-- 猫咪详情页 — 只读 -->
+<view class="container" wx:if="{{cat}}">
+  <image wx:if="{{cat.photo_url}}" class="hero-photo" src="{{cat.photo_url}}" mode="aspectFill" />
+  <view wx:else class="hero-placeholder">🐱</view>
+
+  <view wx:if="{{cat.archive_code}}" class="detail-archive-code">档案编号：{{cat.archive_code}}</view>
+
+  <view class="card">
+    <view class="name-row">
+      <text class="cat-name">{{cat.name}}</text>
+      <text class="breed">{{cat.breed || '未知品种'}}</text>
+    </view>
+    <view class="info-grid">
+      <view class="info-item"><text class="info-label">状态</text><text style="color:{{statusColors[cat.health_status]}}">{{cat.health_status}}</text></view>
+      <view class="info-item"><text class="info-label">城市</text><text>{{cat.city || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">年龄</text><text>{{cat.age || '未知'}}</text></view>
+      <view class="info-item"><text class="info-label">性别</text><image wx:if="{{cat.gender}}" class="gender-icon-detail" src="/images/icons/{{cat.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image><text wx:else>未知</text></view>
+      <view class="info-item"><text class="info-label">绝育</text><text>{{cat.is_neutered ? '是' : '否'}}</text></view>
+    </view>
+  </view>
+
+  <view wx:if="{{cat.personality}}" class="card">
+    <text class="section-title">性格特点</text>
+    <text>{{cat.personality}}</text>
+  </view>
+
+  <view wx:if="{{cat.description || cat.appearance}}" class="card">
+    <text class="section-title">外貌特征</text>
+    <text>{{cat.description || cat.appearance}}</text>
+  </view>
+
+  <view wx:if="{{cat.special_notes}}" class="card special-notes-card">
+    <text class="section-title">💡 特别提示</text>
+    <text>{{cat.special_notes}}</text>
+  </view>
+
+  <view wx:if="{{cat.adoption_status === 'seeking'}}" class="seeking-notice card">
+    <text>🔍 这只猫咪正在找领养，去「猫咪领养」Tab 了解更多</text>
+  </view>
+</view>
+
+<view wx:elif="{{!loading}}" class="empty-state">
+  <text>猫咪不存在</text>
+</view>

@@ -1,0 +1,97 @@
+<!-- 猫咪信息表单 -->
+<view class="container">
+  <view class="photo-section" bindtap="onChoosePhoto">
+    <image wx:if="{{photoPath || photoUrl}}" src="{{photoPath || photoUrl}}" mode="aspectFill" class="photo-preview" />
+    <view wx:else class="photo-placeholder">
+      <image class="photo-icon" src="/images/icons/camera.png" mode="aspectFit"></image>
+      <text>点击拍照</text>
+    </view>
+  </view>
+
+  <view wx:if="{{archiveCode}}" class="form-group archive-code-display">
+    <text class="label">档案编号</text>
+    <text class="archive-code-value">{{archiveCode}}</text>
+    <text class="field-hint">🔒 系统自动生成，创建后不可修改</text>
+  </view>
+
+  <view class="form-group">
+    <text class="label">名字 *</text>
+    <input class="input" placeholder="猫咪名字" value="{{form.name}}" bindinput="onInput" data-field="name" />
+  </view>
+
+  <view class="form-group">
+    <text class="label">品种</text>
+    <picker mode="selector" range="{{breeds}}" bindchange="onSelect" data-field="breed">
+      <view class="picker-value">{{form.breed || '请选择品种'}}</view>
+    </picker>
+  </view>
+
+  <!-- 🔄 省市区三级联动 -->
+  <view class="form-group">
+    <text class="label">所在城市 *</text>
+    <picker mode="region" level="city" value="{{form.region}}" bindchange="onRegionChange">
+      <view class="picker-value">
+        {{form.region[0] ? form.region[0] + ' ' + form.region[1] : '请选择省份和城市'}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-group">
+    <text class="label">状态 *</text>
+    <picker mode="selector" range="{{statuses}}" bindchange="onSelect" data-field="status">
+      <view class="picker-value" style="color:{{statusColors[form.status] || '#333'}}">{{form.status}}</view>
+    </picker>
+  </view>
+
+  <view class="form-group">
+    <text class="label">年龄</text>
+    <input class="input" placeholder="如：2岁" value="{{form.age}}" bindinput="onInput" data-field="age" />
+  </view>
+
+  <view class="form-group">
+    <text class="label">性别</text>
+    <picker mode="selector" range="{{genderOptions}}" bindchange="onSelect" data-field="gender">
+      <view class="picker-value">
+        {{genderOptions[genderValues.indexOf(form.gender)] || '请选择性别'}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="form-group switch-row">
+    <text class="label">是否已绝育</text>
+    <switch checked="{{form.is_neutered}}" bindchange="onSwitch" color="#FF8C42" />
+  </view>
+
+  <view class="form-group">
+    <text class="label">是否找领养</text>
+    <picker mode="selector" range="{{adoptionStatuses}}" bindchange="onSelect" data-field="adoption_status">
+      <view class="picker-value">
+        {{adoptionStatuses[adoptionStatusIndex]}}
+      </view>
+    </picker>
+    <text class="field-hint" wx:if="{{form.adoption_status === 'seeking'}}">
+      💡 开启后将自动发布到「猫咪领养」板块
+    </text>
+  </view>
+
+  <view class="form-group">
+    <text class="label">性格特点</text>
+    <textarea class="textarea" placeholder="如：亲人、胆小、活泼、独立" value="{{form.personality}}" bindinput="onInput" data-field="personality" />
+  </view>
+
+  <view class="form-group">
+    <text class="label">外貌特征</text>
+    <textarea class="textarea" placeholder="如：橘色短毛、白色围脖、折耳" value="{{form.appearance}}" bindinput="onInput" data-field="appearance" />
+  </view>
+
+  <view class="form-group">
+    <text class="label">特别提示</text>
+    <textarea class="textarea" placeholder="如：喜欢吃鸡肉、怕生人、只亲近救助人等" value="{{form.special_notes}}" bindinput="onInput" data-field="special_notes" />
+    <text class="field-hint">💡 救助人的个别嘱托或注意事项，选填</text>
+  </view>
+
+  <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+    {{isEdit ? '保存修改' : '创建档案'}}
+  </button>
+  <view style="height:60rpx;"></view>
+</view>

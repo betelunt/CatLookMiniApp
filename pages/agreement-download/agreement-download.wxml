@@ -1,0 +1,15 @@
+<!-- 协议模板下载 -->
+<view class="container">
+  <view class="card" style="text-align:center;">
+    <text style="font-size:64rpx;display:block;margin-bottom:20rpx;">📄</text>
+    <text class="title">领养协议模板</text>
+    <text class="desc" style="margin:20rpx 0;display:block;">
+      PDF 模板将自动填入猫咪的基本信息。<br/>
+      请下载后双方线下签署。<br/>
+      签署完成后可回传至本小程序存档。
+    </text>
+    <button class="btn-primary" bindtap="onDownload" loading="{{downloading}}">
+      下载协议模板 (PDF)
+    </button>
+  </view>
+</view>

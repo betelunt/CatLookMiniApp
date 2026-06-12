@@ -1,0 +1,105 @@
+<!-- 食材详情 -->
+<view class="container" wx:if="{{food}}">
+  <view class="food-header">
+    <text class="food-name">{{food.name}}</text>
+    <text class="{{food.safety === 'safe' ? 'tag-safe' : food.safety === 'caution' ? 'tag-caution' : 'tag-danger'}}">
+      {{food.safetyLabel}}
+    </text>
+  </view>
+
+  <view class="section card">
+    <text class="section-title">营养成分</text>
+    <text class="section-body">{{food.nutrition || '暂无数据'}}</text>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/tips.png" mode="aspectFit"></image>
+      <text>对猫咪的影响</text>
+    </view>
+    <text class="section-body">{{food.effect || '暂无数据'}}</text>
+  </view>
+
+  <view class="section card">
+    <text class="section-title">食用建议</text>
+    <text class="section-body">{{food.advice || '暂无数据'}}</text>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/warning.png" mode="aspectFit"></image>
+      <text>注意事项</text>
+    </view>
+    <text class="section-body">{{food.warning || '暂无特别注意事项'}}</text>
+  </view>
+</view>
+
+<!-- 配方详情 -->
+<view class="container" wx:if="{{recipe}}">
+  <!-- 发布者 -->
+  <view class="recipe-author-card card" wx:if="{{recipe.author}}">
+    <view class="author-avatar-lg">{{recipe.author.avatarUrl || '🐱'}}</view>
+    <view class="author-info">
+      <text class="author-nick">{{recipe.author.nickName || '猫友'}}</text>
+      <text class="author-date">{{recipe.createdAt || ''}} 分享</text>
+    </view>
+    <view class="like-area">
+      <image class="like-icon" src="/images/icons/like.png" mode="aspectFit"></image>
+      <text class="like-count">{{recipe.likeCount || 0}}</text>
+    </view>
+  </view>
+
+  <!-- 配方名称 -->
+  <view class="recipe-hero card">
+    <text class="recipe-hero-name">{{recipe.name}}</text>
+    <view class="recipe-hero-tags">
+      <text class="recipe-scene-tag">{{recipe.sceneTag || recipe.scene}}</text>
+      <text class="recipe-meta-tag" wx:if="{{recipe.time}}">⏱ {{recipe.time}}</text>
+      <text class="recipe-meta-tag" wx:if="{{recipe.difficulty}}">📊 {{recipe.difficulty}}</text>
+    </view>
+  </view>
+
+  <!-- 食材清单 -->
+  <view class="section card">
+    <text class="section-title">食材清单</text>
+    <view class="ingredient-list">
+      <view class="ingredient-item" wx:for="{{recipe.ingredients}}" wx:key="name">
+        <text class="ing-dot">•</text>
+        <text class="ing-name">{{item.name}}</text>
+        <text class="ing-amount">{{item.amount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 制作步骤 -->
+  <view class="section card">
+    <text class="section-title">制作步骤</text>
+    <view class="step-list">
+      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="*this">
+        <view class="step-num-lg">{{index + 1}}</view>
+        <text class="step-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 小贴士 -->
+  <view wx:if="{{recipe.tips}}" class="section card">
+    <view class="section-title">
+      <image class="section-title-icon" src="/images/icons/tips.png" mode="aspectFit"></image>
+      <text>小贴士</text>
+    </view>
+    <text class="section-body">{{recipe.tips}}</text>
+  </view>
+
+  <!-- 免责声明 -->
+  <view class="disclaimer-card">
+    <text class="disclaimer-text">
+      ⚠️ 本配方由猫友「{{recipe.author.nickName || '未知'}}」个人分享，不代表平台建议。每只猫咪体质不同，请根据自家猫咪情况判断适用性。如有疑问请咨询兽医。
+    </text>
+  </view>
+</view>
+
+<!-- 未找到 -->
+<view wx:if="{{!food && !recipe}}" class="empty-state">
+  <text>内容不存在</text>
+</view>

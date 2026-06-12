@@ -1,0 +1,39 @@
+<!-- 我的举报 -->
+<view class="container">
+
+  <!-- 加载 -->
+  <view wx:if="{{loading}}">
+    <view class="skeleton card" style="height:120rpx;" wx:for="{{[1,2,3]}}" wx:key="*this"></view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{reports.length === 0}}" class="empty-state">
+    <text style="font-size:80rpx;">📋</text>
+    <text>还没有提交过举报</text>
+    <view class="btn-primary" style="margin-top:30rpx;padding:16rpx 48rpx;" bindtap="goReport">去举报</view>
+  </view>
+
+  <!-- 举报列表 -->
+  <view wx:else>
+    <view class="report-card card" wx:for="{{reports}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="report-top">
+        <view class="report-target">
+          <text class="target-role">{{roleLabel[item.role] || item.role}}</text>
+          <text class="target-name">{{item.wechat_nickname || item.real_name || '未知'}}</text>
+        </view>
+        <view class="report-status" style="background:{{statusMap[item.status].color}};">
+          {{statusMap[item.status].label}}
+        </view>
+      </view>
+      <view class="report-mid">
+        <text class="report-category">{{item.category}}</text>
+        <text wx:if="{{item.city}}" class="report-city">📍 {{item.city}}</text>
+      </view>
+      <view class="report-desc">{{item.description}}</view>
+      <view class="report-time">{{item.created_at}}</view>
+    </view>
+
+    <view class="meta-footer">— 仅展示您提交的举报 —</view>
+  </view>
+
+</view>
