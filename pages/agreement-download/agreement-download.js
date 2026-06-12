@@ -1,35 +1,28 @@
 // 协议模板下载页
+const AGREEMENT_TEMPLATE_URL = 'https://d5msiv8g91huch72eu20.baseapi.memfiredb.com/storage/v1/object/public/agreements/template/adoption-agreement-template.doc';
+
 Page({
-  data: { catId: '', downloading: false },
+  data: { downloading: false },
 
-  onLoad(options) {
-    if (options.cat_id) this.setData({ catId: options.cat_id });
-  },
-
-  async onDownload() {
+  onDownload() {
     this.setData({ downloading: true });
-    try {
-      const res = await wx.cloud.callFunction({
-        name: 'generate-pdf',
-        data: { cat_id: this.data.catId },
-      });
-      const { downloadUrl } = res.result;
-      // 下载文件
-      wx.downloadFile({
-        url: downloadUrl,
-        success: (res) => {
+    wx.downloadFile({
+      url: AGREEMENT_TEMPLATE_URL,
+      success: (res) => {
+        if (res.statusCode === 200) {
           wx.openDocument({
             filePath: res.tempFilePath,
-            showMenu: true, // 允许分享给微信好友
-            success: () => wx.showToast({ title: '已打开协议模板' }),
+            fileType: 'doc',
+            showMenu: true,
+            success: () => wx.showToast({ title: '已打开领养协议' }),
+            fail: () => wx.showToast({ title: '打开失败，请重试', icon: 'none' }),
           });
-        },
-        fail: () => wx.showToast({ title: '下载失败', icon: 'none' }),
-      });
-    } catch (e) {
-      console.error(e);
-      wx.showToast({ title: '生成失败', icon: 'none' });
-    }
-    this.setData({ downloading: false });
+        } else {
+          wx.showToast({ title: '下载失败', icon: 'none' });
+        }
+      },
+      fail: () => wx.showToast({ title: '下载失败，请检查网络', icon: 'none' }),
+      complete: () => this.setData({ downloading: false }),
+    });
   },
 });
