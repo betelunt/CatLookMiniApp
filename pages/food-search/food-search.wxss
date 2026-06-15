@@ -78,16 +78,27 @@
 .food-level { display: flex; align-items: center; gap: 12rpx; }
 .arrow { font-size: 36rpx; color: var(--text-secondary); }
 
-/* ── 模式切换 ── */
-.mode-switch {
-  display: flex; gap: 16rpx; margin-bottom: 24rpx;
+/* ── Tab 切换（并排）── */
+.tab-bar {
+  display: flex;
+  background: var(--card);
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 24rpx;
 }
-.mode-tab {
-  background: var(--card); padding: 14rpx 32rpx;
-  border-radius: 40rpx; font-size: 26rpx; color: var(--text-secondary);
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
 }
-.mode-tab.active {
-  background: #5C6BC0; color: #FFF; font-weight: 600;
+.tab-item.active {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom-color: var(--primary);
 }
 
 /* ── 营养知识面板 ── */

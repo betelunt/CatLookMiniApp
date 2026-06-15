@@ -6,18 +6,23 @@
     <image class="search-icon" src="/images/icons/search.png" mode="aspectFit"></image>
   </view>
 
-  <!-- 模式切换 -->
-  <view class="mode-switch">
-    <view class="mode-tab {{!showNutrition ? 'active' : ''}}" bindtap="toggleNutrition" wx:if="{{showNutrition}}">
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'food' ? 'active' : ''}}"
+          data-tab="food" bindtap="onTabChange">
       🔍 食物查询
     </view>
-    <view class="mode-tab {{showNutrition ? 'active' : ''}}" bindtap="toggleNutrition" wx:if="{{!showNutrition}}">
+    <view class="tab-item {{activeTab === 'nutrition' ? 'active' : ''}}"
+          data-tab="nutrition" bindtap="onTabChange">
       💊 营养知识
     </view>
   </view>
 
-  <!-- 分类标签（食物查询模式） -->
-  <scroll-view class="cat-scroll" scroll-x wx:if="{{!showNutrition}}">
+  <!-- ═══ 食物查询模式 ═══ -->
+  <block wx:if="{{activeTab === 'food'}}">
+
+  <!-- 分类标签 -->
+  <scroll-view class="cat-scroll" scroll-x>
     <view class="cat-tag {{activeCategory === item.key ? 'active' : ''}}"
           wx:for="{{categories}}" wx:key="key"
           bindtap="onCategoryTap" data-category="{{item.key}}">
@@ -106,8 +111,11 @@
     </view>
   </view>
 
+  </block>
+  <!-- ═══ 食物查询模式结束 ═══ -->
+
   <!-- ═══ 营养知识面板 ═══ -->
-  <view class="nutrition-panel" wx:if="{{showNutrition}}">
+  <view class="nutrition-panel" wx:if="{{activeTab === 'nutrition'}}">
     <view class="nutrition-intro">
       <text class="nutrition-intro-text">猫咪是专性肉食动物，以下 13 种核心营养素对它们的健康至关重要。点击查看每种营养素的作用及富含该营养素的食材。</text>
     </view>

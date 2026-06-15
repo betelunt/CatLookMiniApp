@@ -28,8 +28,9 @@ Page({
     filteredRecipes: [],   // 场景筛选后的配方
     recipeScenes: [],      // 配方场景列表
     activeScene: '',       // 当前选中场景
+    // 页面模式
+    activeTab: 'food',           // 'food' | 'nutrition'
     // 营养知识
-    showNutrition: false,        // 是否显示营养知识面板
     nutrients: buildNutrients(), // 全部营养素（已注入食物名称映射）
     supplements: SUPPLEMENTS,    // 补充剂列表
     selectedNutrientId: '',      // 当前选中营养素
@@ -113,9 +114,10 @@ Page({
     wx.navigateTo({ url: `/pages/food-detail/food-detail?id=${id}` });
   },
 
-  /** 切换营养知识面板 */
-  toggleNutrition() {
-    this.setData({ showNutrition: !this.data.showNutrition, selectedNutrientId: '' });
+  /** Tab 切换：食物查询 / 营养知识 */
+  onTabChange(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ activeTab: tab, selectedNutrientId: '', results: [], noResult: false });
   },
 
   /** 选中营养素查看详情 */
