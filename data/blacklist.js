@@ -204,8 +204,10 @@ async function getMyReports() {
   const userId = getApp().globalData.userId;
   if (!userId) return [];
   return await select('blacklist_reports', {
+    columns: 'id,reported_name,reported_wx,role,category,status,created_at',
     filters: { reporter_wx: userId },
     order: { column: 'created_at', direction: 'desc' },
+    limit: 30,
   });
 }
 

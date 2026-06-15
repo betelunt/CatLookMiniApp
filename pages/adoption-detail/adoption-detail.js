@@ -21,11 +21,21 @@ Page({
         this.setData({ cat: getCatById(id), loading: false });
         return;
       }
-      const cats = await select('cats', { filters: { id } });
-      if (cats && cats[0]) this.setData({ cat: cats[0], loading: false });
+      const cats = await select('cats', { filters: { id, life_status: 'active' } });
+      if (cats && cats[0]) {
+        const cat = cats[0];
+        this.setData({ cat, loading: false });
+      }
     } catch (e) {
       console.error(e);
       this.setData({ loading: false });
+    }
+  },
+
+  onPreviewPhoto() {
+    const url = this.data.cat?.photo_url;
+    if (url) {
+      wx.previewImage({ urls: [url], current: url });
     }
   },
 

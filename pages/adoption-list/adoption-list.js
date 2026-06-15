@@ -1,7 +1,14 @@
 // 猫咪领养列表 Tab2
-const { select } = require('../../utils/supabase');
+const { select, getThumbUrl } = require('../../utils/supabase');
 const { getSeekingCats } = require('../../data/mock');
 const { STATUS_COLORS, GENDER_LABELS, GENDER_COLORS, BREEDS } = require('../../utils/constants');
+const { cacheSet, cacheGet } = require('../../utils/cache');
+const { fillCities } = require('../../utils/geo');
+const getThumb = (url, w) => getThumbUrl(url, w);
+
+const CACHE_KEY = 'adoption_cats';
+const CACHE_TTL = 30;
+const PAGE_SIZE = 20;
 
 Page({
   data: {
@@ -27,10 +34,10 @@ Page({
   onShow() { this.loadAdoptionCats(); },
 
   onPullDownRefresh() {
-    this.loadAdoptionCats().then(() => wx.stopPullDownRefresh());
+    this.loadAdoptionCats(true).then(() => wx.stopPullDownRefresh());
   },
 
-  async loadAdoptionCats() {
+  async loadAdoptionCats(forceRefresh = false) {
     this.setData({ loading: true });
     try {
       let cats;
@@ -38,12 +45,23 @@ Page({
         await new Promise(r => setTimeout(r, 300));
         cats = getSeekingCats();
       } else {
-        cats = await select('cats', {
-          filters: { adoption_status: 'seeking' },
-          order: { column: 'created_at', direction: 'desc' },
-        });
+        if (!forceRefresh) {
+          const cached = cacheGet(CACHE_KEY);
+          if (cached) { cats = cached; }
+        }
+        if (!cats) {
+          cats = await select('cats', {
+            columns: 'id,name,breed,city,latitude,longitude,photo_url,archive_code,health_status,gender,adoption_status',
+            filters: { adoption_status: 'seeking', life_status: 'active' },
+            order: { column: 'created_at', direction: 'desc' },
+            limit: PAGE_SIZE,
+            publicRead: true,
+          });
+          cats = cats || [];
+          cats = await fillCities(cats);
+          cacheSet(CACHE_KEY, cats, CACHE_TTL);
+        }
       }
-      cats = cats || [];
       this._allCats = cats;
       const rawCities = [...new Set(cats.map(c => c.city).filter(Boolean))];
       this.setData({ cities: ['全部', ...rawCities] });
@@ -56,7 +74,10 @@ Page({
 
   /** 三条件联动过滤 + 瀑布流分列 */
   applyFilters() {
-    let cats = this._allCats;
+    let cats = (this._allCats || []).map(cat => ({
+      ...cat,
+      photo_url: getThumb(cat.photo_url, 200),
+    }));
     const { cityFilter, breedFilter, searchKeyword } = this.data;
 
     if (cityFilter) {

@@ -5,7 +5,7 @@ const { getToken } = require('./utils/auth');
 // 🔧 全局开发模式开关 —— 唯一控制点
 //    true  = mock 数据，无需云函数/数据库
 //    false = 真实 API，需要云函数已部署 + 数据库已迁移
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 App({
   globalData: {
@@ -17,10 +17,16 @@ App({
   },
 
   onLaunch() {
-    // 1. Init Supabase REST client
+    // 1. Init cloud environment
+    wx.cloud.init({ env: 'cloudbase-d2g4q6xck93c02591' });
+
+    // 2. Init Supabase REST client
     initSupabase();
 
-    // 2. Check if we have a cached token
+    // 3. 隐私协议授权处理（微信必查项）
+    this.initPrivacy();
+
+    // 4. Check if we have a cached token
     const cached = getToken();
     if (cached) {
       this.globalData.token = cached.token;
@@ -28,7 +34,7 @@ App({
       this.globalData.isLoggedIn = true;
     }
 
-    // 3. Check for system updates
+    // 5. Check for system updates
     const updateManager = wx.getUpdateManager();
     updateManager.onUpdateReady(() => {
       wx.showModal({
@@ -39,6 +45,26 @@ App({
         },
       });
     });
+  },
+
+  /** 初始化隐私协议授权监听 */
+  initPrivacy() {
+    // 检查基础库是否支持隐私授权 API
+    if (wx.onNeedPrivacyAuthorization) {
+      wx.onNeedPrivacyAuthorization((resolve) => {
+        // 弹出系统隐私协议弹窗
+        wx.requirePrivacyAuthorize({
+          success: () => {
+            // 用户同意
+            resolve({ event: 'agree' });
+          },
+          fail: () => {
+            // 用户拒绝
+            resolve({ event: 'disagree' });
+          },
+        });
+      });
+    }
   },
 
   /** 执行登录（开发模式使用 mock，正式模式使用微信云函数） */

@@ -1,6 +1,9 @@
 <!-- 猫咪详情页 — 只读 -->
 <view class="container" wx:if="{{cat}}">
-  <image wx:if="{{cat.photo_url}}" class="hero-photo" src="{{cat.photo_url}}" mode="aspectFill" />
+  <view wx:if="{{cat.photo_url}}" class="hero-photo-wrap" bindtap="onPreviewPhoto">
+    <image class="hero-photo" src="{{cat.photo_url}}" mode="aspectFit" />
+    <view class="photo-zoom-tip"><image class="zoom-icon" src="/images/icons/search.png" mode="aspectFit"></image> 查看原图</view>
+  </view>
   <view wx:else class="hero-placeholder">🐱</view>
 
   <view wx:if="{{cat.archive_code}}" class="detail-archive-code">档案编号：{{cat.archive_code}}</view>
@@ -8,13 +11,13 @@
   <view class="card">
     <view class="name-row">
       <text class="cat-name">{{cat.name}}</text>
-      <text class="breed">{{cat.breed || '未知品种'}}</text>
+      <text class="breed">{{cat.breed || '待守护者完善'}}</text>
     </view>
     <view class="info-grid">
       <view class="info-item"><text class="info-label">状态</text><text style="color:{{statusColors[cat.health_status]}}">{{cat.health_status}}</text></view>
-      <view class="info-item"><text class="info-label">城市</text><text>{{cat.city || '未知'}}</text></view>
-      <view class="info-item"><text class="info-label">年龄</text><text>{{cat.age || '未知'}}</text></view>
-      <view class="info-item"><text class="info-label">性别</text><image wx:if="{{cat.gender}}" class="gender-icon-detail" src="/images/icons/{{cat.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image><text wx:else>未知</text></view>
+      <view class="info-item"><text class="info-label">城市</text><text>{{cat.city || '待完善'}}</text></view>
+      <view class="info-item"><text class="info-label">年龄</text><text>{{cat.age || '待完善'}}</text></view>
+      <view class="info-item"><text class="info-label">性别</text><image wx:if="{{cat.gender}}" class="gender-icon-detail" src="/images/icons/{{cat.gender === 'male' ? 'boy' : 'girl'}}.png" mode="aspectFit"></image><text wx:else>待完善</text></view>
       <view class="info-item"><text class="info-label">绝育</text><text>{{cat.is_neutered ? '是' : '否'}}</text></view>
     </view>
   </view>

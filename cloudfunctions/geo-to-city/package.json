@@ -1,0 +1,10 @@
+{
+  "name": "geo-to-city",
+  "version": "1.0.0",
+  "description": "批量逆地理编码：经纬度→城市名（仅省+市级别）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^2.6.3",
+    "node-fetch": "^2.6.7"
+  }
+}

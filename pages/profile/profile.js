@@ -3,6 +3,11 @@ const { getMyCats } = require('../../data/mock');
 const { getUserRecipes } = require('../../utils/recipes');
 const { getMyReports } = require('../../data/blacklist');
 const { STATUS_COLORS } = require('../../utils/constants');
+const { cacheSet, cacheGet } = require('../../utils/cache');
+const { getThumbUrl } = require('../../utils/supabase');
+
+const CACHE_KEY_PROFILE = 'profile_cats';
+const CACHE_TTL = 30;
 Page({
   data: {
     isLoggedIn: false,
@@ -56,21 +61,30 @@ Page({
         await new Promise(r => setTimeout(r, 300));
         const all = getMyCats();
         this.setData({
-          recentCats: all.slice(0, 3),
+          recentCats: all.slice(0, 3).map(c => ({ ...c, photo_url: getThumbUrl(c.photo_url, 150) })),
           totalCatCount: all.length,
           catLoading: false,
         });
         return;
       }
-      const { select } = require('../../utils/supabase');
-      const cats = await select('cats', {
-        filters: { created_by: app.globalData.userId },
-        order: { column: 'created_at', direction: 'desc' },
-        limit: 3,
-      });
+      // 缓存读取
+      let cats = cacheGet(CACHE_KEY_PROFILE);
+      if (!cats) {
+        const { select } = require('../../utils/supabase');
+        cats = await select('cats', {
+          columns: 'id,name,breed,photo_url,archive_code,health_status,adoption_status,created_at',
+          filters: { created_by: app.globalData.userId },
+          order: { column: 'created_at', direction: 'desc' },
+          limit: 3,
+        });
+        cats = cats || [];
+        cacheSet(CACHE_KEY_PROFILE, cats, CACHE_TTL);
+      }
+      // 缩略图转换
+      const recentCats = cats.map(c => ({ ...c, photo_url: getThumbUrl(c.photo_url, 150) }));
       this.setData({
-        recentCats: cats || [],
-        totalCatCount: (cats || []).length,
+        recentCats,
+        totalCatCount: recentCats.length,
         catLoading: false,
       });
     } catch (e) {

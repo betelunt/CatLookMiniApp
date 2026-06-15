@@ -1,7 +1,7 @@
 {
   "description": "猫录助手微信小程序",
   "compileType": "miniprogram",
-  "appid": "wx28bfc44bb31bd451",
+  "appid": "wxca88428f12c63dff",
   "projectname": "catlook",
   "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {

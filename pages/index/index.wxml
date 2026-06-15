@@ -1,7 +1,7 @@
 <!-- 猫咪广场 Tab1 — 浏览所有猫咪（只读） -->
 <view class="container">
   <view class="top-bar">
-    <text class="title">全部猫咪 ({{leftCats.length + rightCats.length}})</text>
+    <text class="title">全部猫咪 ({{totalCount || (leftCats.length + rightCats.length)}})</text>
   </view>
 
   <!-- 筛选栏：城市 | 品种 | 搜索 -->
@@ -37,23 +37,30 @@
 
   <!-- 空状态 -->
   <view wx:elif="{{leftCats.length === 0 && rightCats.length === 0}}" class="empty-state">
-    <text style="font-size:80rpx;">🐱</text>
+    <text style="font-size:80rpx;">📸</text>
     <text wx:if="{{cityFilter || breedFilter || searchKeyword}}">没有找到匹配的猫咪</text>
-    <text wx:else>还没有猫咪档案</text>
+    <text wx:else>还没有猫咪照片，快来做第一只猫咪的守护者吧 🐱</text>
   </view>
 
   <!-- 瀑布流双列 -->
   <view wx:else class="waterfall">
     <view class="col">
-      <view class="archive-card card" wx:for="{{leftCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
+      <view
+        class="archive-card card waterfall-card"
+        wx:for="{{leftCats}}" wx:key="id"
+        data-id="{{item.id}}"
+        bindtouchstart="onCardTouchStart"
+        bindtouchmove="onCardTouchMove"
+        bindtap="onCardTap"
+      >
+        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" lazy-load="{{true}}" />
         <view wx:else class="card-photo-placeholder">🐱</view>
         <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
         <view class="card-body">
           <view class="card-row">
             <view class="card-title-group">
               <text class="card-name">{{item.name}}</text>
-              <text class="card-breed">{{item.breed || '未知'}}</text>
+              <text class="card-breed">{{item.breed || '待完善'}}</text>
             </view>
             <text class="card-status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status || '未知'}}</text>
           </view>
@@ -61,15 +68,22 @@
       </view>
     </view>
     <view class="col">
-      <view class="archive-card card" wx:for="{{rightCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
+      <view
+        class="archive-card card waterfall-card"
+        wx:for="{{rightCats}}" wx:key="id"
+        data-id="{{item.id}}"
+        bindtouchstart="onCardTouchStart"
+        bindtouchmove="onCardTouchMove"
+        bindtap="onCardTap"
+      >
+        <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" lazy-load="{{true}}" />
         <view wx:else class="card-photo-placeholder">🐱</view>
         <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
         <view class="card-body">
           <view class="card-row">
             <view class="card-title-group">
               <text class="card-name">{{item.name}}</text>
-              <text class="card-breed">{{item.breed || '未知'}}</text>
+              <text class="card-breed">{{item.breed || '待完善'}}</text>
             </view>
             <text class="card-status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status || '未知'}}</text>
           </view>
@@ -77,4 +91,8 @@
       </view>
     </view>
   </view>
+
+  <!-- 加载更多 -->
+  <view wx:if="{{!loading && loadingMore}}" class="load-more-hint">正在加载更多...</view>
+  <view wx:elif="{{!loading && !hasMore && (leftCats.length + rightCats.length) > 0}}" class="load-more-hint">— 已显示全部猫咪 —</view>
 </view>

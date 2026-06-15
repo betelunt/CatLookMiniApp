@@ -19,11 +19,23 @@ Page({
         this.setData({ cat, loading: false });
         return;
       }
-      const cats = await select('cats', { filters: { id } });
-      if (cats && cats[0]) this.setData({ cat: cats[0], loading: false });
+      const cats = await select('cats', { filters: { id, life_status: 'active' } });
+      if (cats && cats[0]) {
+        const cat = cats[0];
+        // 详情页用原图，不压缩（仅此一页，不影响流量）
+        this.setData({ cat, loading: false });
+      }
     } catch (e) {
       console.error(e);
       this.setData({ loading: false });
+    }
+  },
+
+  /** 点击照片用微信原生预览器查看原图（支持缩放） */
+  onPreviewPhoto() {
+    const url = this.data.cat?.photo_url;
+    if (url) {
+      wx.previewImage({ urls: [url], current: url });
     }
   },
 });

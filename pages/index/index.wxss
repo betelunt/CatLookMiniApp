@@ -100,10 +100,11 @@
   font-family: monospace;
 }
 
-/* 照片区 */
+/* 照片区 — 保留原始比例，自然瀑布流错位 */
 .card-photo {
   width: 100%;
   display: block;
+  min-height: 200rpx;
 }
 .card-photo-placeholder {
   width: 100%;
@@ -157,4 +158,12 @@
   border-radius: 10rpx;
   border: 1rpx solid #E0E0E0;
   background: #FAFAFA;
+}
+
+/* 加载更多 */
+.load-more-hint {
+  text-align: center;
+  padding: 32rpx;
+  color: #999;
+  font-size: 24rpx;
 }

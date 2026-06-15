@@ -3,10 +3,19 @@
   background: #FFF5EC; display: flex; align-items: center;
   justify-content: center; font-size: 120rpx; margin-bottom: 20rpx;
 }
-.hero-photo {
-  width: 100%; height: 400rpx; border-radius: 16rpx;
-  margin-bottom: 20rpx; background: #F0F0F0;
+.hero-photo-wrap {
+  position: relative; margin-bottom: 20rpx; border-radius: 16rpx; overflow: hidden;
 }
+.hero-photo {
+  width: 100%; height: 500rpx; background: #F0F0F0; display: block;
+}
+.photo-zoom-tip {
+  position: absolute; bottom: 16rpx; right: 16rpx;
+  background: rgba(0,0,0,0.55); color: #FFF;
+  padding: 8rpx 20rpx; border-radius: 24rpx;
+  font-size: 22rpx; display: flex; align-items: center; gap: 6rpx;
+}
+.zoom-icon { width: 28rpx; height: 28rpx; }
 .name-row { display: flex; align-items: baseline; gap: 16rpx; margin-bottom: 24rpx; }
 .cat-name { font-size: 40rpx; font-weight: 700; }
 .breed { font-size: 26rpx; color: var(--text-secondary); }

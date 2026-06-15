@@ -1,12 +1,23 @@
 // 我的猫咪列表 — 完整列表（从「我的」跳转）
 const { getMyCats } = require('../../data/mock');
 const { STATUS_COLORS } = require('../../utils/constants');
+const { cacheSet, cacheGet } = require('../../utils/cache');
+const { getThumbUrl } = require('../../utils/supabase');
+
+const CACHE_KEY = 'my_cats';
+const CACHE_TTL = 60;   // 我的猫咪变更频率低，缓存可以长一点
+const PAGE_SIZE = 20;
+
 Page({
   data: { cats: [], loading: true, statusColors: STATUS_COLORS },
 
   onShow() { this.loadCats(); },
 
-  async loadCats() {
+  onPullDownRefresh() {
+    this.loadCats(true).then(() => wx.stopPullDownRefresh());
+  },
+
+  async loadCats(forceRefresh = false) {
     this.setData({ loading: true });
     const app = getApp();
     if (app.globalData.DEV_MODE) {
@@ -14,13 +25,23 @@ Page({
       this.setData({ cats: getMyCats(), loading: false });
       return;
     }
-    // 真实 API: 从 Supabase 拉取当前用户的猫咪
-    const { select } = require('../../utils/supabase');
-    const cats = await select('cats', {
-      filters: { created_by: app.globalData.userId },
-      order: { column: 'created_at', direction: 'desc' },
-    });
-    this.setData({ cats: cats || [], loading: false });
+    let cats;
+    if (!forceRefresh) {
+      cats = cacheGet(CACHE_KEY);
+    }
+    if (!cats) {
+      const { select } = require('../../utils/supabase');
+      cats = await select('cats', {
+        columns: 'id,name,breed,photo_url,archive_code,health_status,adoption_status,created_at',
+        filters: { created_by: app.globalData.userId },
+        order: { column: 'created_at', direction: 'desc' },
+        limit: PAGE_SIZE,
+      });
+      cats = cats || [];
+      cacheSet(CACHE_KEY, cats, CACHE_TTL);
+    }
+    const thumbCats = cats.map(c => ({ ...c, photo_url: getThumbUrl(c.photo_url, 200) }));
+    this.setData({ cats: thumbCats, loading: false });
   },
 
   goEdit(e) {

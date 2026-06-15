@@ -27,11 +27,13 @@ Page({
         await new Promise(r => setTimeout(r, 300));
         reports = getConfirmedReports(this.data.activeTab);
       } else {
-        // 真实模式从 Supabase 查
+        // 真实模式从 Supabase 查（限制 50 条，黑名单数据量不会太大）
         const { select } = require('../../utils/supabase');
         reports = await select('blacklist_reports', {
+          columns: 'id,reported_name,reported_wx,role,reason,category,evidence_images,confirmations,created_at',
           filters: { status: 'confirmed', role: this.data.activeTab },
           order: { column: 'created_at', direction: 'desc' },
+          limit: 50,
         });
       }
       this.setData({ reports: reports || [], loading: false });

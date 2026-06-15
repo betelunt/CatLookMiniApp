@@ -70,16 +70,34 @@ Page({
       sourceType: ['camera', 'album'],
       success(res) {
         const tempPath = res.tempFilePaths[0];
-        // 存到持久化目录，否则页面跳转后丢失
-        const fs = wx.getFileSystemManager();
-        const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
-        try {
-          fs.saveFileSync(tempPath, savedPath);
-          that.setData({ photoPath: savedPath, photoUrl: '' });
-        } catch (e) {
-          // 兜底：直接用临时路径
-          that.setData({ photoPath: tempPath, photoUrl: '' });
-        }
+        // 🔧 压缩图片到 300KB 左右再保存（大幅减少存储流量）
+        wx.compressImage({
+          src: tempPath,
+          quality: 65,
+          compressedWidth: 800,  // 小程序展示 800px 足够
+          success(compressRes) {
+            const compressedPath = compressRes.tempFilePath;
+            const fs = wx.getFileSystemManager();
+            const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
+            try {
+              fs.saveFileSync(compressedPath, savedPath);
+              that.setData({ photoPath: savedPath, photoUrl: '' });
+            } catch (e) {
+              that.setData({ photoPath: compressedPath, photoUrl: '' });
+            }
+          },
+          fail() {
+            // 压缩失败兜底：直接用原图
+            const fs = wx.getFileSystemManager();
+            const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
+            try {
+              fs.saveFileSync(tempPath, savedPath);
+              that.setData({ photoPath: savedPath, photoUrl: '' });
+            } catch (e) {
+              that.setData({ photoPath: tempPath, photoUrl: '' });
+            }
+          },
+        });
       },
     });
   },
