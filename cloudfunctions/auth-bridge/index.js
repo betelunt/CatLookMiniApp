@@ -26,8 +26,20 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://d5msiv8g91huch72eu20.baseapi.memfiredb.com';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-const WX_APPID = process.env.WX_APPID;
-const WX_SECRET = process.env.WX_SECRET;
+
+// WX_APPID 优先从环境变量读，没有则从微信上下文获取
+function getAppId() {
+  if (process.env.WX_APPID) return process.env.WX_APPID;
+  try {
+    const ctx = cloud.getWXContext();
+    return ctx.APPID;
+  } catch (_) { return null; }
+}
+
+// WX_SECRET 暂硬编码 —— 测试用，生产请移到环境变量
+function getAppSecret() {
+  return process.env.WX_SECRET || '';
+}
 
 // ── 工具函数 ─────────────────────────────────────────────
 
@@ -45,9 +57,16 @@ async function supabaseAdmin(method, path, body = null) {
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  const data = await res.json();
+  // 解析响应：处理空 body（201 Created / 204 No Content）
+  const text = await res.text();
+  let data = {};
+  if (text && text.trim()) {
+    try { data = JSON.parse(text); } catch (_) { /* 非 JSON 响应，忽略 */ }
+  }
+
   if (!res.ok) {
-    throw new Error(`Supabase API error ${res.status}: ${JSON.stringify(data)}`);
+    console.error(`Supabase ${method} ${path} → ${res.status}:`, text.slice(0, 300));
+    throw new Error(`Supabase API ${res.status}: ${text.slice(0, 200)}`);
   }
   return data;
 }
@@ -67,8 +86,13 @@ exports.main = async (event) => {
 
   try {
     // ── 1. 微信 code → openid + unionid ──────────────────
+    const appId = getAppId();
+    const appSecret = getAppSecret();
+    if (!appSecret) {
+      return { ok: false, error: 'WX_SECRET 未配置，请在云函数环境变量中设置' };
+    }
     const wxRes = await fetch(
-      `https://api.weixin.qq.com/sns/jscode2session?appid=${WX_APPID}&secret=${WX_SECRET}&js_code=${code}&grant_type=authorization_code`
+      `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
     );
     const wxData = await wxRes.json();
 
@@ -136,37 +160,35 @@ exports.main = async (event) => {
 
       // ── 4. 写入 users 表 + user_identities ──────────
       if (userId) {
-        // 4a. 写入 users 表（App 端依赖此表）
-        await supabaseAdmin('POST', '/rest/v1/users', {
-          id: userId,
-          username: `wx_${openid.slice(0, 8)}`,
-          email: `${openid}@wechat.mp`,
-          wechat_openid: openid,
-        });
+        // 4a. 写入 users 表（App 端依赖此表），容错：已存在则跳过
+        try {
+          await supabaseAdmin('POST', '/rest/v1/users', {
+            id: userId,
+            username: `wx_${openid.slice(0, 8)}`,
+            email: `${openid}@wechat.mp`,
+            wechat_openid: openid,
+          });
+        } catch (e) {
+          console.log('users insert skipped (may already exist):', e.message.slice(0, 100));
+        }
 
         // 4b. 写入 user_identities 表
-        const identityData = {
-          auth_user_id: userId,
-          account_id: userId,
-          wechat_openid: openid,
-          provider: 'wechat',
-        };
-        // 如果有 unionid 且列已迁移，也写入
-        if (unionid) {
-          try {
-            identityData.wechat_unionid = unionid;
-            await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
-          } catch (_) {
-            // wechat_unionid 列不存在，去掉后重试
-            delete identityData.wechat_unionid;
-            await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
-          }
-        } else {
+        try {
+          const identityData = {
+            auth_user_id: userId,
+            account_id: userId,
+            wechat_openid: openid,
+            provider: 'wechat',
+          };
+          if (unionid) identityData.wechat_unionid = unionid;
           await supabaseAdmin('POST', '/rest/v1/user_identities', identityData);
+        } catch (e) {
+          console.log('user_identities insert skipped (may already exist):', e.message.slice(0, 100));
         }
-        console.log(`new user created: ${userId}`);
+
+        console.log(`user linked: ${userId}`);
       } else {
-        return { ok: false, error: 'failed to create user' };
+        return { ok: false, error: 'failed to create or find user' };
       }
     }
 
