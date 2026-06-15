@@ -65,41 +65,43 @@ Page({
 
   onChoosePhoto() {
     const that = this;
-    wx.chooseImage({
-      count: 1, sizeType: ['compressed'],
-      sourceType: ['camera', 'album'],
-      success(res) {
-        const tempPath = res.tempFilePaths[0];
-        // 🔧 压缩图片到 300KB 左右再保存（大幅减少存储流量）
-        wx.compressImage({
-          src: tempPath,
-          quality: 65,
-          compressedWidth: 800,  // 小程序展示 800px 足够
-          success(compressRes) {
-            const compressedPath = compressRes.tempFilePath;
-            const fs = wx.getFileSystemManager();
-            const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
-            try {
-              fs.saveFileSync(compressedPath, savedPath);
-              that.setData({ photoPath: savedPath, photoUrl: '' });
-            } catch (e) {
-              that.setData({ photoPath: compressedPath, photoUrl: '' });
-            }
-          },
-          fail() {
-            // 压缩失败兜底：直接用原图
-            const fs = wx.getFileSystemManager();
-            const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
-            try {
-              fs.saveFileSync(tempPath, savedPath);
-              that.setData({ photoPath: savedPath, photoUrl: '' });
-            } catch (e) {
-              that.setData({ photoPath: tempPath, photoUrl: '' });
-            }
-          },
-        });
-      },
-    });
+    const openPicker = () => {
+      wx.chooseImage({
+        count: 1, sizeType: ['compressed'],
+        sourceType: ['camera', 'album'],
+        success(res) {
+          const tempPath = res.tempFilePaths[0];
+          wx.compressImage({
+            src: tempPath, quality: 65, compressedWidth: 800,
+            success(compressRes) {
+              const compressedPath = compressRes.tempFilePath;
+              const fs = wx.getFileSystemManager();
+              const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
+              try { fs.saveFileSync(compressedPath, savedPath); that.setData({ photoPath: savedPath, photoUrl: '' }); }
+              catch (e) { that.setData({ photoPath: compressedPath, photoUrl: '' }); }
+            },
+            fail() {
+              const fs = wx.getFileSystemManager();
+              const savedPath = `${wx.env.USER_DATA_PATH}/cat_photo_${Date.now()}.jpg`;
+              try { fs.saveFileSync(tempPath, savedPath); that.setData({ photoPath: savedPath, photoUrl: '' }); }
+              catch (e) { that.setData({ photoPath: tempPath, photoUrl: '' }); }
+            },
+          });
+        },
+        fail(err) {
+          console.error('chooseImage failed:', err);
+          if (err.errMsg && err.errMsg.includes('auth deny')) {
+            wx.showToast({ title: '需要相册/相机权限', icon: 'none' });
+          }
+        },
+      });
+    };
+    // 先触发隐私授权确认
+    if (wx.requirePrivacyAuthorize) {
+      wx.requirePrivacyAuthorize({ success: () => openPicker(), fail: () => openPicker() });
+    } else {
+      openPicker();
+    }
   },
 
   onInput(e) {

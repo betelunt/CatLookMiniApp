@@ -77,15 +77,20 @@ Page({
       wx.showToast({ title: '最多上传9张图片', icon: 'none' });
       return;
     }
-    wx.chooseImage({
-      count: remain,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const files = [...this.data.evidenceFiles, ...res.tempFilePaths];
-        this.setData({ evidenceFiles: files });
-      },
-    });
+    const doPick = () => {
+      wx.chooseImage({
+        count: remain, sizeType: ['compressed'], sourceType: ['album', 'camera'],
+        success: (res) => {
+          const files = [...this.data.evidenceFiles, ...res.tempFilePaths];
+          this.setData({ evidenceFiles: files });
+        },
+      });
+    };
+    if (wx.requirePrivacyAuthorize) {
+      wx.requirePrivacyAuthorize({ success: () => doPick(), fail: () => doPick() });
+    } else {
+      doPick();
+    }
   },
 
   onRemoveImage(e) {

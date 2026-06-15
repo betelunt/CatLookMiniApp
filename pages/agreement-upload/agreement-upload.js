@@ -7,13 +7,17 @@ Page({
   },
 
   onChooseAndUpload() {
-    wx.chooseImage({
-      count: 1,
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        this.uploadAgreement(res.tempFilePaths[0]);
-      },
-    });
+    const doPick = () => {
+      wx.chooseImage({
+        count: 1, sourceType: ['album', 'camera'],
+        success: (res) => { this.uploadAgreement(res.tempFilePaths[0]); },
+      });
+    };
+    if (wx.requirePrivacyAuthorize) {
+      wx.requirePrivacyAuthorize({ success: () => doPick(), fail: () => doPick() });
+    } else {
+      doPick();
+    }
   },
 
   async uploadAgreement(filePath) {
