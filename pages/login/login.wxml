@@ -7,9 +7,9 @@
 
     <view class="privacy-notice">
       <text>登录即表示您同意</text>
-      <text class="link" bindtap="onShowPrivacy">《用户协议》</text>
+      <text class="link" bindtap="onGoAgreement">《用户协议》</text>
       <text>和</text>
-      <text class="link" bindtap="onShowPrivacy">《隐私政策》</text>
+      <text class="link" bindtap="onGoAgreement">《隐私政策》</text>
     </view>
 
     <button class="btn-primary login-btn" bindtap="onLogin" loading="{{loading}}" disabled="{{loading}}">

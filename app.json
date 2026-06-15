@@ -18,7 +18,8 @@
     "pages/my-reports/my-reports",
     "pages/blacklist/blacklist",
     "pages/blacklist-detail/blacklist-detail",
-    "pages/blacklist-report/blacklist-report"
+    "pages/blacklist-report/blacklist-report",
+    "pages/agreement/agreement"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FF8C42",

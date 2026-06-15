@@ -16,16 +16,17 @@ Page({
     this.setData({ loading: false });
   },
 
-  /** 点击隐私政策链接 —— 弹出系统隐私协议窗口 */
+  /** 点击隐私政策链接 —— 打开完整的协议与隐私政策页面 */
+  onGoAgreement() {
+    wx.navigateTo({ url: '/pages/agreement/agreement' });
+  },
+
+  /** 查看隐私协议（系统弹窗版本） */
   onShowPrivacy() {
     if (wx.requirePrivacyAuthorize) {
       wx.requirePrivacyAuthorize({
-        success: () => {
-          // 用户查看了隐私协议
-        },
-        fail: () => {
-          // 用户关闭了弹窗（不是拒绝，只是关闭查看）
-        },
+        success: () => {},
+        fail: () => {},
       });
     } else {
       wx.showToast({ title: '请在微信后台配置隐私协议', icon: 'none' });

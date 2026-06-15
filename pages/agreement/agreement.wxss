@@ -1,0 +1,44 @@
+.container { padding: 0; }
+
+/* Tab 切换 */
+.tab-bar {
+  display: flex;
+  background: #FFF;
+  border-radius: 0;
+  margin-bottom: 0;
+  position: sticky; top: 0; z-index: 10;
+  border-bottom: 1rpx solid #EEE;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
+}
+.tab-item.active {
+  color: #FF8C42;
+  font-weight: 700;
+  border-bottom-color: #FF8C42;
+}
+
+/* 内容 */
+.content {
+  padding: 32rpx 28rpx 60rpx;
+}
+.title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+  margin-bottom: 28rpx;
+  text-align: center;
+}
+.body-text {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.9;
+  white-space: pre-line;
+}
