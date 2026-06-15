@@ -1,6 +1,20 @@
-// 食物查询 Tab3 — 食材搜索 + 猫饭配方推荐（全UGC）
+// 食物查询 Tab3 — 食材搜索 + 猫饭配方推荐 + 营养知识
 const { FOOD_CATEGORIES } = require('../../utils/constants');
 const { getAllRecipes, getByScene } = require('../../utils/recipes');
+const { NUTRIENTS, SUPPLEMENTS } = require('../../data/nutrition');
+const foodsData = require('../../data/foods');
+
+/** 预处理营养素数据，注入食物名称映射 */
+function buildNutrients() {
+  return NUTRIENTS.map(n => ({
+    ...n,
+    _foodMap: (n.foodIds || []).reduce((map, fid) => {
+      const food = foodsData.find(f => f.id === fid);
+      if (food) map[fid] = food.name + (food.safety === 'danger' ? '⚠️' : '');
+      return map;
+    }, {}),
+  }));
+}
 
 Page({
   data: {
@@ -14,6 +28,11 @@ Page({
     filteredRecipes: [],   // 场景筛选后的配方
     recipeScenes: [],      // 配方场景列表
     activeScene: '',       // 当前选中场景
+    // 营养知识
+    showNutrition: false,        // 是否显示营养知识面板
+    nutrients: buildNutrients(), // 全部营养素（已注入食物名称映射）
+    supplements: SUPPLEMENTS,    // 补充剂列表
+    selectedNutrientId: '',      // 当前选中营养素
   },
 
   onShow() {
@@ -92,5 +111,25 @@ Page({
   goDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/food-detail/food-detail?id=${id}` });
+  },
+
+  /** 切换营养知识面板 */
+  toggleNutrition() {
+    this.setData({ showNutrition: !this.data.showNutrition, selectedNutrientId: '' });
+  },
+
+  /** 选中营养素查看详情 */
+  onNutrientTap(e) {
+    const id = e.currentTarget.dataset.id;
+    const selected = this.data.selectedNutrientId === id ? '' : id;
+    this.setData({ selectedNutrientId: selected });
+  },
+
+  /** 获取营养素对应的食物列表 */
+  getNutrientFoods(nutrient) {
+    if (!nutrient || !nutrient.foodIds) return [];
+    return nutrient.foodIds
+      .map(id => foodsData.find(f => f.id === id))
+      .filter(Boolean);
   },
 });

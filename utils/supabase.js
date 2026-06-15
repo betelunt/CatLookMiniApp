@@ -6,8 +6,23 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 
 let _token = null;
 
+/** 识别无效 token（mock token, 过期 token 等） */
+function isValidToken(t) {
+  if (!t) return false;
+  // 过滤掉 DEV_MODE 的 mock token
+  if (t.startsWith('dev-mock-token-')) return false;
+  return true;
+}
+
 function initSupabase() {
-  _token = wx.getStorageSync('supabase_token') || null;
+  const raw = wx.getStorageSync('supabase_token');
+  if (isValidToken(raw)) {
+    _token = raw;
+  } else {
+    // 清除无效缓存，避免 401
+    _token = null;
+    if (raw) wx.removeStorageSync('supabase_token');
+  }
 }
 
 /** 设置 auth token（用于后续请求的 Authorization header） */
@@ -15,14 +30,16 @@ function setToken(token) {
   _token = token;
 }
 
-/** 通用请求方法 */
-function request(method, path, { body, params, auth = true } = {}) {
+/** 通用请求方法（返回 { data, headers }） */
+function request(method, path, { body, params, auth = true, extraHeaders = {} } = {}) {
   return new Promise((resolve, reject) => {
     const header = {
       'apikey': SUPABASE_ANON_KEY,
       'Content-Type': 'application/json',
+      ...extraHeaders,
     };
-    if (auth && _token) {
+    // 只发送有效的 token
+    if (auth && isValidToken(_token)) {
       header['Authorization'] = `Bearer ${_token}`;
     }
 
@@ -43,7 +60,11 @@ function request(method, path, { body, params, auth = true } = {}) {
       data: body,
       success(res) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(res.data);
+          resolve({ data: res.data, headers: res.header || {} });
+        } else if (res.statusCode === 401) {
+          _token = null;
+          wx.removeStorageSync('supabase_token');
+          reject({ status: 401, message: res.data });
         } else {
           reject({ status: res.statusCode, message: res.data });
         }
@@ -57,29 +78,39 @@ function request(method, path, { body, params, auth = true } = {}) {
 
 // ── 便捷方法 ──
 
-/** SELECT */
-function select(table, { columns = '*', filters = {}, limit, offset, order } = {}) {
+/**
+ * SELECT
+ *   count: 'exact' → 返回 { data, totalCount } 对象
+ *   默认 → 返回数据数组（向后兼容）
+ */
+function select(table, { columns = '*', filters = {}, limit, offset, order, publicRead = false, count } = {}) {
   const qs = [];
 
-  // PostgREST filter: key=eq.value
   for (const [key, value] of Object.entries(filters)) {
     if (value !== undefined && value !== null) {
       qs.push(`${encodeURIComponent(key)}=eq.${encodeURIComponent(value)}`);
     }
   }
 
-  // select columns
   if (columns !== '*') qs.push(`select=${encodeURIComponent(columns)}`);
-
-  // pagination
   if (limit)  qs.push(`limit=${limit}`);
   if (offset) qs.push(`offset=${offset}`);
-
-  // ordering
   if (order)  qs.push(`order=${encodeURIComponent(order.column)}.${order.direction || 'asc'}`);
 
-  const path = `/${table}` + (qs.length > 0 ? '?' + qs.join('&') : '');
-  return request('GET', path);
+  const extraHeaders = {};
+  if (count === 'exact') {
+    extraHeaders['Prefer'] = 'count=exact';
+  }
+
+  const reqPath = `/${table}` + (qs.length > 0 ? '?' + qs.join('&') : '');
+  return request('GET', reqPath, { auth: !publicRead, extraHeaders }).then(res => {
+    if (count === 'exact') {
+      const contentRange = res.headers['content-range'] || res.headers['Content-Range'] || '';
+      const total = contentRange ? parseInt(contentRange.split('/').pop(), 10) : (res.data || []).length;
+      return { data: res.data || [], totalCount: total };
+    }
+    return res.data;
+  });
 }
 
 /** INSERT single row */
@@ -87,17 +118,17 @@ function insert(table, data) {
   return request('POST', `/${table}`, {
     body: data,
     params: { return: 'representation' },
-  });
+  }).then(r => r.data);
 }
 
 /** UPDATE */
 function update(table, id, data) {
-  return request('PATCH', `/${table}?id=eq.${id}`, { body: data });
+  return request('PATCH', `/${table}?id=eq.${id}`, { body: data }).then(r => r.data);
 }
 
 /** DELETE */
 function remove(table, id) {
-  return request('DELETE', `/${table}?id=eq.${id}`);
+  return request('DELETE', `/${table}?id=eq.${id}`).then(r => r.data);
 }
 
 /** 上传文件到 Supabase Storage */
@@ -127,6 +158,28 @@ function uploadFile(bucket, path, filePath) {
   });
 }
 
+/**
+ * 获取 Supabase Storage 图片的缩略图 URL
+ * MemFire 兼容 Supabase Storage 的 image transformation
+ * @param {string} originalUrl - 原始图片 URL
+ * @param {number} width - 宽度（px），高度自动等比缩放
+ * @returns {string} 带缩略参数的 URL
+ */
+function getThumbUrl(originalUrl, width = 200) {
+  if (!originalUrl) return '';
+  // 跳过已经是 data URI 或微信临时路径
+  if (originalUrl.startsWith('data:') || originalUrl.startsWith('wxfile://') || originalUrl.startsWith('http://tmp/')) {
+    return originalUrl;
+  }
+  // 如果已经是 Supabase Storage URL，追加 transformation 参数
+  if (originalUrl.includes('/storage/v1/object/')) {
+    // Supabase image transformation: ?width=200&quality=80
+    const sep = originalUrl.includes('?') ? '&' : '?';
+    return `${originalUrl}${sep}width=${width}&quality=75`;
+  }
+  return originalUrl;
+}
+
 module.exports = {
   SUPABASE_URL,
   initSupabase,
@@ -137,4 +190,5 @@ module.exports = {
   update,
   remove,
   uploadFile,
+  getThumbUrl,
 };

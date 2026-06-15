@@ -77,3 +77,110 @@
 .food-cat { font-size: 24rpx; color: var(--text-secondary); }
 .food-level { display: flex; align-items: center; gap: 12rpx; }
 .arrow { font-size: 36rpx; color: var(--text-secondary); }
+
+/* ── 模式切换 ── */
+.mode-switch {
+  display: flex; gap: 16rpx; margin-bottom: 24rpx;
+}
+.mode-tab {
+  background: var(--card); padding: 14rpx 32rpx;
+  border-radius: 40rpx; font-size: 26rpx; color: var(--text-secondary);
+}
+.mode-tab.active {
+  background: #5C6BC0; color: #FFF; font-weight: 600;
+}
+
+/* ── 营养知识面板 ── */
+.nutrition-panel { margin-top: 16rpx; }
+.nutrition-intro {
+  padding: 20rpx; background: #EEF2FF; border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+.nutrition-intro-text {
+  font-size: 24rpx; color: #3F51B5; line-height: 1.6;
+}
+
+.nutrient-list { margin-bottom: 32rpx; }
+.nutrient-card {
+  margin-bottom: 16rpx; padding: 20rpx 24rpx;
+  transition: all 0.2s;
+}
+.nutrient-card.expanded {
+  border-left: 6rpx solid #5C6BC0;
+}
+.nutrient-header {
+  display: flex; align-items: center; gap: 16rpx;
+}
+.nutrient-icon { font-size: 40rpx; flex-shrink: 0; width: 52rpx; text-align: center; }
+.nutrient-info { flex: 1; }
+.nutrient-name {
+  font-size: 28rpx; font-weight: 700; color: var(--text);
+  display: block;
+}
+.nutrient-key {
+  font-size: 22rpx; color: var(--text-secondary);
+  font-style: italic;
+}
+.nutrient-arrow {
+  font-size: 28rpx; color: var(--text-secondary); flex-shrink: 0;
+}
+
+/* 展开详情 */
+.nutrient-detail { margin-top: 20rpx; }
+.detail-section {
+  margin-bottom: 16rpx; padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
+.detail-section:first-child { border-top: none; }
+.detail-label {
+  font-size: 24rpx; font-weight: 700; color: var(--text);
+  display: block; margin-bottom: 8rpx;
+}
+.detail-text {
+  font-size: 24rpx; color: var(--text-secondary);
+  line-height: 1.7; display: block;
+}
+.note-text {
+  background: #FFFDE7; padding: 12rpx; border-radius: 10rpx;
+  color: #6D4C00;
+}
+
+/* 食物标签 */
+.nutrient-foods {
+  display: flex; flex-wrap: wrap; gap: 10rpx; margin-top: 4rpx;
+}
+.nutrient-food-tag {
+  display: inline-block; padding: 6rpx 16rpx;
+  background: #E8F5E9; color: #2E7D32;
+  font-size: 22rpx; border-radius: 20rpx;
+}
+.nutrient-food-empty {
+  font-size: 22rpx; color: #CCC;
+}
+
+/* 补充剂 */
+.supplement-section { margin-top: 8rpx; }
+.section-title {
+  font-size: 30rpx; font-weight: 700; color: var(--text);
+  display: block; margin-bottom: 20rpx;
+}
+.supplement-card {
+  margin-bottom: 20rpx; padding: 24rpx;
+}
+.supplement-name {
+  font-size: 28rpx; font-weight: 700; color: var(--text);
+  display: block; margin-bottom: 4rpx;
+}
+.supplement-type {
+  display: inline-block; font-size: 22rpx; color: #5C6BC0;
+  background: #EEF2FF; padding: 4rpx 14rpx; border-radius: 20rpx;
+  margin-bottom: 16rpx;
+}
+.supplement-benefit {
+  font-size: 24rpx; color: var(--text-secondary);
+  line-height: 1.7; display: block; margin-bottom: 16rpx;
+}
+.supplement-advice { margin-bottom: 12rpx; }
+.supplement-warning {
+  padding: 12rpx; background: #FFF3E0; border-radius: 10rpx;
+}

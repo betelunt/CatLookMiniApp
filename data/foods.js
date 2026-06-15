@@ -65,6 +65,8 @@ const foods = [
   { id:"s19", name:"章鱼", category:"seafood", categoryLabel:"海鲜", safety:"caution", safetyLabel:"谨慎", nutrition:"高蛋白、含牛磺酸、铁", effect:"补充牛磺酸", advice:"白水煮熟后切碎，少量偶尔喂食", warning:"⚠️ 章鱼吸盘难以消化，务必切碎。不能喂生章鱼或调味章鱼" },
   { id:"s20", name:"鱼籽/鱼卵", category:"seafood", categoryLabel:"海鲜", safety:"caution", safetyLabel:"谨慎", nutrition:"高蛋白、高脂肪、高胆固醇", advice:"极少量偶尔喂食。营养密度极高", warning:"⚠️ 含盐量可能较高（尤其市售鱼籽），且胆固醇极高" },
   { id:"s21", name:"海带/昆布", category:"seafood", categoryLabel:"海鲜", safety:"caution", safetyLabel:"谨慎", nutrition:"富含碘、褐藻酸、膳食纤维", advice:"煮熟切碎，极少量混入肉类中", warning:"⚠️ 碘含量过高可能影响甲状腺功能！极少量即可" },
+  { id:"s22", name:"虾皮", category:"seafood", categoryLabel:"海鲜", safety:"caution", safetyLabel:"谨慎", nutrition:"钙含量极高（约991mg/100g），含蛋白质、虾青素", effect:"超强补钙，天然钙来源", advice:"选无盐淡干虾皮，温水浸泡20分钟去除多余盐分后沥干，切碎或研磨成粉，极少量撒在猫食上", warning:"⚠️ 市售虾皮大多含盐量极高！必须泡水去盐。高钠可导致肾脏负担。每次仅需指甲盖大小即可" },
+  { id:"s23", name:"鲭鱼", category:"seafood", categoryLabel:"海鲜", safety:"safe", safetyLabel:"安全", nutrition:"富含Omega-3（EPA+DHA）、镁、维生素D、蛋白质", effect:"美毛护肤、维护心血管、抗炎、补镁", advice:"蒸/煮熟后去刺，鱼肉捣碎喂食。每周1-2次", warning:"必须煮熟！生鲭鱼可能含寄生虫。嘌呤中等，肾功能不好的猫咪控制量" },
 
   // ═══════════════════════════════════════════════════════════
   // 4. 蔬菜 (~27 种)
@@ -96,6 +98,9 @@ const foods = [
   { id:"v25", name:"青椒/彩椒", category:"vegetable", categoryLabel:"蔬菜", safety:"safe", safetyLabel:"安全", nutrition:"维生素C含量极高（比橙子高）、β-胡萝卜素", effect:"抗氧化，补充维C", advice:"去籽煮熟后切碎，少量添加", warning:"辣椒素集中在籽和白膜中，要去净。不能喂辣椒（辣的）" },
   { id:"v26", name:"蘑菇/口蘑", category:"vegetable", categoryLabel:"蔬菜", safety:"caution", safetyLabel:"谨慎", nutrition:"含β-葡聚糖、硒、B族维生素", effect:"增强免疫力", advice:"买超市常见的养殖蘑菇（口蘑/香菇/杏鲍菇），彻底煮熟后切碎少量喂食", warning:"⚠️ 绝对不能喂野生蘑菇！很多对猫剧毒！不确定品种的蘑菇不要喂" },
   { id:"v27", name:"秋葵", category:"vegetable", categoryLabel:"蔬菜", safety:"safe", safetyLabel:"安全", nutrition:"含黏液蛋白、膳食纤维、钙", effect:"护胃，助消化", advice:"煮熟后切小段，少量添加", warning:"黏液可能黏在猫咪胡须上" },
+  { id:"v28", name:"芥蓝", category:"vegetable", categoryLabel:"蔬菜", safety:"safe", safetyLabel:"安全", nutrition:"富含钙、维生素C、β-胡萝卜素、膳食纤维", effect:"高钙绿叶菜，助骨骼健康，抗氧化", advice:"焯水煮熟后切碎，少量混入肉中喂食", warning:"含少量草酸，焯水可去除大部分。有泌尿结石史的猫咪适量即可" },
+  { id:"v29", name:"油菜/上海青", category:"vegetable", categoryLabel:"蔬菜", safety:"safe", safetyLabel:"安全", nutrition:"富含钙、维生素A/C/K、膳食纤维", effect:"补钙、抗氧化、助消化，绿叶菜中钙吸收率较高", advice:"洗净焯水后切碎，少量混入肉类中。茎部较硬需煮软", warning:"清洗干净去除农药残留；一次不要喂太多以免腹泻" },
+  { id:"v30", name:"苋菜", category:"vegetable", categoryLabel:"蔬菜", safety:"caution", safetyLabel:"谨慎", nutrition:"富含铁、钙、维生素C、花青素（红苋菜）", effect:"补铁补血，高钙", advice:"焯水去除草酸后切碎，少量喂食。不要常喂", warning:"⚠️ 草酸含量较高（比菠菜低但仍有），有泌尿问题的猫咪避免。含铁量高但过量可能导致便秘" },
 
   // ═══════════════════════════════════════════════════════════
   // 5. 水果 (~24 种)
@@ -205,6 +210,8 @@ const foods = [
   { id:"n7", name:"夏威夷果", category:"other", categoryLabel:"其他", safety:"danger", safetyLabel:"危险", nutrition:"—", advice:"绝对禁止！", warning:"☠️ 对狗剧毒，对猫毒性数据不全但极不安全！导致呕吐、体温升高、后肢瘫痪（狗症状）" },
   { id:"n8", name:"芝麻", category:"other", categoryLabel:"其他", safety:"safe", safetyLabel:"安全", nutrition:"含钙、铁、芝麻素", advice:"极少量熟芝麻偶尔撒在猫食上", warning:"高脂肪高热量，少量即可" },
   { id:"n9", name:"南瓜籽", category:"other", categoryLabel:"其他", safety:"safe", safetyLabel:"安全", nutrition:"含锌、镁、健康脂肪酸、葫芦素（天然驱虫）", effect:"可能帮助驱除消化道寄生虫（民间用法）", advice:"去壳后烤熟（无盐无油），研磨成粉少量拌入食物", warning:"整颗南瓜籽难消化。驱虫效果未经科学验证，不能替代兽用驱虫药" },
+  { id:"n10", name:"奇亚籽", category:"other", categoryLabel:"其他", safety:"safe", safetyLabel:"安全", nutrition:"富含Omega-3（ALA）、膳食纤维（可溶+不可溶）、完全蛋白质", effect:"优质纤维来源助消化排毛球，Omega-3抗炎美毛", advice:"用水泡发成凝胶状（约10分钟），少量混入食物。每次1/4茶匙即可", warning:"必须泡发！干奇亚籽遇水膨胀30倍，直接喂干籽可能导致食道或肠道堵塞。高纤维不宜过量" },
+  { id:"n11", name:"亚麻籽", category:"other", categoryLabel:"其他", safety:"caution", safetyLabel:"谨慎", nutrition:"富含Omega-3（ALA）、木酚素（抗氧化）、膳食纤维", effect:"美毛抗炎，助消化，抗氧化", advice:"必须研磨成粉后使用（整粒不消化），少量撒在猫食上。每次1/8茶匙即可", warning:"⚠️ 必须磨粉！整粒亚麻籽猫咪无法消化直接排出。生亚麻籽含微量氰苷，熟亚麻籽粉更安全。高脂肪不宜多喂" },
 
   // ── 饮品 ──
   { id:"dr1", name:"茶", category:"other", categoryLabel:"其他", safety:"danger", safetyLabel:"危险", nutrition:"—", effect:"☠️ 含咖啡因和茶碱", advice:"绝对不要让猫喝茶（绿茶红茶乌龙茶普洱茶全部）", warning:"☠️ 咖啡因和茶碱对猫有毒，导致心跳加速、震颤、呕吐、癫痫" },

@@ -6,8 +6,18 @@
     <image class="search-icon" src="/images/icons/search.png" mode="aspectFit"></image>
   </view>
 
-  <!-- 分类标签 -->
-  <scroll-view class="cat-scroll" scroll-x>
+  <!-- 模式切换 -->
+  <view class="mode-switch">
+    <view class="mode-tab {{!showNutrition ? 'active' : ''}}" bindtap="toggleNutrition" wx:if="{{showNutrition}}">
+      🔍 食物查询
+    </view>
+    <view class="mode-tab {{showNutrition ? 'active' : ''}}" bindtap="toggleNutrition" wx:if="{{!showNutrition}}">
+      💊 营养知识
+    </view>
+  </view>
+
+  <!-- 分类标签（食物查询模式） -->
+  <scroll-view class="cat-scroll" scroll-x wx:if="{{!showNutrition}}">
     <view class="cat-tag {{activeCategory === item.key ? 'active' : ''}}"
           wx:for="{{categories}}" wx:key="key"
           bindtap="onCategoryTap" data-category="{{item.key}}">
@@ -92,6 +102,77 @@
           {{item.safetyLabel}}
         </text>
         <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ═══ 营养知识面板 ═══ -->
+  <view class="nutrition-panel" wx:if="{{showNutrition}}">
+    <view class="nutrition-intro">
+      <text class="nutrition-intro-text">猫咪是专性肉食动物，以下 13 种核心营养素对它们的健康至关重要。点击查看每种营养素的作用及富含该营养素的食材。</text>
+    </view>
+
+    <view class="nutrient-list">
+      <view class="nutrient-card card {{selectedNutrientId === item.id ? 'expanded' : ''}}"
+            wx:for="{{nutrients}}" wx:key="id"
+            bindtap="onNutrientTap" data-id="{{item.id}}">
+
+        <!-- 营养素头部 -->
+        <view class="nutrient-header">
+          <view class="nutrient-icon">{{item.id === 'nu1' ? '🥩' : item.id === 'nu2' ? '💪' : item.id === 'nu3' ? '🐟' : item.id === 'nu4' ? '🦴' : item.id === 'nu5' ? '⚡' : item.id === 'nu6' ? '❤️' : item.id === 'nu7' ? '🌿' : item.id === 'nu8' ? '🧈' : item.id === 'nu9' ? '👁️' : item.id === 'nu10' ? '🔋' : item.id === 'nu11' ? '🩸' : item.id === 'nu12' ? '🛡️' : '💧'}}</view>
+          <view class="nutrient-info">
+            <text class="nutrient-name">{{item.name}}</text>
+            <text class="nutrient-key">{{item.key}}</text>
+          </view>
+          <text class="nutrient-arrow">{{selectedNutrientId === item.id ? '▾' : '▸'}}</text>
+        </view>
+
+        <!-- 展开详情 -->
+        <view class="nutrient-detail" wx:if="{{selectedNutrientId === item.id}}">
+          <view class="detail-section">
+            <text class="detail-label">📋 对猫的重要性</text>
+            <text class="detail-text">{{item.importance}}</text>
+          </view>
+          <view class="detail-section" wx:if="{{item.deficiency}}">
+            <text class="detail-label">⚠️ 缺乏症状</text>
+            <text class="detail-text">{{item.deficiency}}</text>
+          </view>
+          <view class="detail-section" wx:if="{{item.dailyNeed}}">
+            <text class="detail-label">📏 每日需求参考</text>
+            <text class="detail-text">{{item.dailyNeed}}</text>
+          </view>
+          <view class="detail-section">
+            <text class="detail-label">🍖 富含此营养素的食物</text>
+            <view class="nutrient-foods">
+              <text class="nutrient-food-tag" wx:for="{{item.foodIds}}" wx:key="*this" wx:for-item="foodId">
+                {{item._foodMap ? item._foodMap[foodId] : foodId}}
+              </text>
+              <text class="nutrient-food-empty" wx:if="{{item.foodIds.length === 0}}">暂无收录食材</text>
+            </view>
+          </view>
+          <view class="detail-section" wx:if="{{item.note}}">
+            <text class="detail-label">💡 小贴士</text>
+            <text class="detail-text note-text">{{item.note}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 补充剂 -->
+    <view class="supplement-section">
+      <text class="section-title">🩹 常用营养补充剂</text>
+      <view class="supplement-card card" wx:for="{{supplements}}" wx:key="id">
+        <text class="supplement-name">{{item.name}}</text>
+        <text class="supplement-type">{{item.type}}</text>
+        <text class="supplement-benefit">{{item.benefit}}</text>
+        <view class="supplement-advice">
+          <text class="detail-label">✅ 使用建议</text>
+          <text class="detail-text">{{item.advice}}</text>
+        </view>
+        <view class="supplement-warning" wx:if="{{item.warning}}">
+          <text class="detail-label">⚠️ 注意事项</text>
+          <text class="detail-text">{{item.warning}}</text>
+        </view>
       </view>
     </view>
   </view>
