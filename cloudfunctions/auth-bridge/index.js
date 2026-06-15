@@ -132,30 +132,49 @@ exports.main = async (event) => {
       const email = `${openid}@wechat.mp`;
       const password = genPassword(openid);
 
-      // 先尝试用 admin API 创建用户
+      // 尝试用标准 signup 创建用户（兼容 MemFire / 标准 Supabase）
       let created;
       try {
-        created = await supabaseAdmin('POST', '/auth/v1/admin/users', {
+        created = await supabaseAdmin('POST', '/auth/v1/signup', {
           email,
           password,
-          email_confirm: true,
-          user_metadata: {
+          data: {
             openid,
             unionid: unionid || null,
             provider: 'wechat',
           },
         });
+        console.log('signup response keys:', Object.keys(created));
       } catch (e) {
-        // 用户可能已存在（email 冲突），尝试直接登录
-        console.log('admin create user failed (maybe exists):', e.message);
+        console.log('signup failed (user may already exist):', e.message);
       }
 
-      userId = created?.id || created?.user?.id;
+      userId = created?.user?.id || created?.id;
+
+      // 如果 signup 成功但没拿到 userId，尝试直接登录获取
+      if (!userId && created?.access_token) {
+        // signup 返回了 token，但结构不同，从 token 中解析 userId
+        console.log('got token from signup, looking up user');
+        try {
+          const userRes = await supabaseAdmin('GET', '/auth/v1/user', null);
+          userId = userRes?.id;
+        } catch (_) {}
+      }
 
       if (!userId) {
-        // 回退: 尝试从 auth.users 查找
-        console.log('attempting fallback: look up by email');
-        // 直接用 sign-in 试 —— 如果存在会成功，不存在会失败
+        console.log('signup did not return userId, trying token grant as fallback');
+        try {
+          const tokenRes = await supabaseAdmin('POST', '/auth/v1/token?grant_type=password', {
+            email,
+            password,
+          });
+          userId = tokenRes?.user?.id || tokenRes?.id;
+          if (!userId) {
+            return { ok: false, error: 'failed to create user: no userId returned' };
+          }
+        } catch (e2) {
+          return { ok: false, error: 'failed to create or sign in user: ' + (e2.message || '').slice(0, 100) };
+        }
       }
 
       // ── 4. 写入 users 表 + user_identities ──────────
