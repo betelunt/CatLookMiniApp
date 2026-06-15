@@ -182,6 +182,66 @@ const SEED_RECIPES = [
     createdAt: '2026-06-01',
     likeCount: 42,
   },
+  {
+    id: 'seed_7', name: '兔肉蔬菜轻食',
+    scene: '体重管理', sceneTag: '低脂高蛋白',
+    time: '15分钟', difficulty: '简单',
+    ingredients: [
+      { name: '兔肉', amount: '60g' },
+      { name: '西兰花', amount: '10g' },
+      { name: '红薯', amount: '20g' },
+    ],
+    steps: [
+      '兔肉去骨煮熟切丁',
+      '西兰花煮软切碎，红薯蒸熟捣泥',
+      '混合拌匀即可',
+    ],
+    tips: '兔肉是超低脂肉类，适合需要减肥的猫咪。每周可喂3-4次。',
+    photoUrl: '',
+    author: { nickName: '橘猫铲屎官', avatarUrl: '' },
+    createdAt: '2026-06-10',
+    likeCount: 56,
+  },
+  {
+    id: 'seed_8', name: '鳕鱼山药羹',
+    scene: '肠胃调理', sceneTag: '温和易消化',
+    time: '15分钟', difficulty: '简单',
+    ingredients: [
+      { name: '鳕鱼', amount: '60g' },
+      { name: '山药', amount: '30g' },
+    ],
+    steps: [
+      '鳕鱼蒸熟去刺捣碎',
+      '山药蒸熟去皮捣泥',
+      '混合加少量温水调成羹状',
+    ],
+    tips: '鳕鱼肉质细嫩低脂，山药养胃，非常适合肠胃敏感的猫咪。',
+    photoUrl: '',
+    author: { nickName: '布偶妈妈', avatarUrl: '' },
+    createdAt: '2026-06-12',
+    likeCount: 38,
+  },
+  {
+    id: 'seed_9', name: '鸡胗南瓜助消餐',
+    scene: '日常营养', sceneTag: '助消化健胃',
+    time: '15分钟', difficulty: '简单',
+    ingredients: [
+      { name: '鸡胗', amount: '40g' },
+      { name: '鸡胸肉', amount: '40g' },
+      { name: '南瓜', amount: '20g' },
+    ],
+    steps: [
+      '鸡胗去除内膜洗净，沸水煮熟切碎',
+      '鸡胸肉煮熟撕丝',
+      '南瓜蒸熟捣泥',
+      '三者混合拌匀',
+    ],
+    tips: '鸡胗含天然胃蛋白酶，帮助猫咪消化。口感Q弹猫咪超爱。',
+    photoUrl: '',
+    author: { nickName: '三花小主', avatarUrl: '' },
+    createdAt: '2026-06-14',
+    likeCount: 72,
+  },
 ];
 
 module.exports = {

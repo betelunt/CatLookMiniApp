@@ -28,8 +28,6 @@ const FOOD_CATEGORIES = [
   { key: 'fruit', label: '水果' },
   { key: 'grain', label: '谷物' },
   { key: 'dairy', label: '乳制品' },
-  { key: 'seasoning', label: '调味品' },
-  { key: 'toxic_plant', label: '有毒植物' },
   { key: 'other', label: '其他' },
 ];
 
