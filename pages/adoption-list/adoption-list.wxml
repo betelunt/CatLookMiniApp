@@ -43,7 +43,7 @@
     <view class="col">
       <view class="adopt-card card" wx:for="{{leftCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
         <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
-        <view wx:else class="card-photo-placeholder">🐱</view>
+        <view wx:else class="card-photo-placeholder"><image style="width:60rpx;height:60rpx;" src="/images/icons/cat-default.jpg" mode="aspectFit"></image></view>
         <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
         <view class="card-body">
           <view class="card-row">
@@ -65,7 +65,7 @@
     <view class="col">
       <view class="adopt-card card" wx:for="{{rightCats}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
         <image wx:if="{{item.photo_url}}" class="card-photo" src="{{item.photo_url}}" mode="aspectFill" />
-        <view wx:else class="card-photo-placeholder">🐱</view>
+        <view wx:else class="card-photo-placeholder"><image style="width:60rpx;height:60rpx;" src="/images/icons/cat-default.jpg" mode="aspectFit"></image></view>
         <view wx:if="{{item.archive_code}}" class="card-archive-code">NO. {{item.archive_code}}</view>
         <view class="card-body">
           <view class="card-row">

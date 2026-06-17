@@ -138,7 +138,7 @@
         <!-- 展开详情 -->
         <view class="nutrient-detail" wx:if="{{selectedNutrientId === item.id}}">
           <view class="detail-section">
-            <text class="detail-label">📋 对猫的重要性</text>
+            <text class="detail-label"><image style="width:24rpx;height:24rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/agreement.png" mode="aspectFit"></image>对猫的重要性</text>
             <text class="detail-text">{{item.importance}}</text>
           </view>
           <view class="detail-section" wx:if="{{item.deficiency}}">

@@ -4,7 +4,7 @@
     <image class="hero-photo" src="{{cat.photo_url}}" mode="aspectFit" />
     <view class="photo-zoom-tip"><image class="zoom-icon" src="/images/icons/search.png" mode="aspectFit"></image> 查看原图</view>
   </view>
-  <view wx:else class="hero-placeholder">🐱</view>
+  <view wx:else class="hero-placeholder"><image style="width:100%;height:100%;" src="/images/icons/cat-default.jpg" mode="aspectFit"></image></view>
 
   <view wx:if="{{cat.archive_code}}" class="detail-archive-code">档案编号：{{cat.archive_code}}</view>
 

@@ -1,7 +1,7 @@
 <!-- 登录页 -->
 <view class="container login-container">
   <view class="login-card">
-    <text class="logo-text">🐱</text>
+    <image class="logo-img" src="/images/icons/cat-default.jpg" mode="aspectFit"></image>
     <text class="app-name">猫录助手</text>
     <text class="app-desc">猫咪档案 · 领养 · 营养查询</text>
 

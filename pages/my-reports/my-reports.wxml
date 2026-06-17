@@ -8,7 +8,7 @@
 
   <!-- 空状态 -->
   <view wx:elif="{{reports.length === 0}}" class="empty-state">
-    <text style="font-size:80rpx;">📋</text>
+    <image style="width:80rpx;height:80rpx;" src="/images/icons/agreement.png" mode="aspectFit"></image>
     <text>还没有提交过举报</text>
     <view class="btn-primary" style="margin-top:30rpx;padding:16rpx 48rpx;" bindtap="goReport">去举报</view>
   </view>

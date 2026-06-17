@@ -5,7 +5,7 @@
   </view>
 
   <view wx:elif="{{agreements.length === 0}}" class="empty-state">
-    <text style="font-size:80rpx;">📋</text>
+    <image style="width:80rpx;height:80rpx;" src="/images/icons/agreement.png" mode="aspectFit"></image>
     <text>暂无领养协议</text>
     <text style="font-size:24rpx;color:var(--text-secondary);margin-top:12rpx;">下载并签署协议后，在此回传存档</text>
   </view>

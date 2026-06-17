@@ -11,9 +11,8 @@
   </view>
 
   <view class="card" style="text-align:center;">
-    <text style="font-size:64rpx;display:block;margin-bottom:20rpx;">
-      {{uploaded ? '✅' : '📤'}}
-    </text>
+    <image wx:if="{{!uploaded}}" style="width:64rpx;height:64rpx;display:block;margin:0 auto 20rpx;" src="/images/icons/upload.png" mode="aspectFit"></image>
+    <text wx:else style="font-size:64rpx;display:block;margin-bottom:20rpx;">✅</text>
     <text class="title" wx:if="{{!uploaded}}">回传已签署的协议</text>
     <text class="title" wx:else>回传成功</text>
     <text class="desc" style="margin:20rpx 0;display:block;">

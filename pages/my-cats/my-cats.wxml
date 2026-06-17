@@ -10,14 +10,14 @@
   </view>
 
   <view wx:elif="{{cats.length === 0}}" class="empty-state">
-    <text style="font-size:80rpx;">🐱</text>
+    <image style="width:80rpx;height:80rpx;" src="/images/icons/cat-default.jpg" mode="aspectFit"></image>
     <text>还没有猫咪档案</text>
   </view>
 
   <view wx:else>
     <view class="cat-item card" wx:for="{{cats}}" wx:key="id">
       <image wx:if="{{item.photo_url}}" class="my-cat-thumb" src="{{item.photo_url}}" mode="aspectFill" />
-      <view wx:else class="my-cat-thumb placeholder">🐱</view>
+      <view wx:else class="my-cat-thumb placeholder"><image style="width:50rpx;height:50rpx;" src="/images/icons/cat-default.jpg" mode="aspectFit"></image></view>
       <view class="cat-info">
         <text class="cat-name">{{item.name}}</text>
         <view class="cat-tags">
