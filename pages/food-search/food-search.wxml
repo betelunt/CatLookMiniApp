@@ -14,7 +14,7 @@
     </view>
     <view class="tab-item {{activeTab === 'nutrition' ? 'active' : ''}}"
           data-tab="nutrition" bindtap="onTabChange">
-      💊 营养知识
+      <image style="width:32rpx;height:32rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/supplement.png" mode="aspectFit"></image>营养知识
     </view>
   </view>
 
@@ -168,7 +168,7 @@
 
     <!-- 补充剂 -->
     <view class="supplement-section">
-      <text class="section-title">🩹 常用营养补充剂</text>
+      <view class="section-title"><image style="width:32rpx;height:32rpx;vertical-align:middle;margin-right:6rpx;" src="/images/icons/supplement.png" mode="aspectFit"></image>常用营养补充剂</view>
       <view class="supplement-card card" wx:for="{{supplements}}" wx:key="id">
         <text class="supplement-name">{{item.name}}</text>
         <text class="supplement-type">{{item.type}}</text>
