@@ -4,6 +4,10 @@ Page({
 
   onShow() { this.loadAgreements(); },
 
+  goUpload() {
+    wx.navigateTo({ url: '/pages/agreement-upload/agreement-upload' });
+  },
+
   async loadAgreements() {
     const app = getApp();
     this.setData({ loading: true });

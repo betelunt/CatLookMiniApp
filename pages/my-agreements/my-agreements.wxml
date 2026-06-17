@@ -7,7 +7,7 @@
   <view wx:elif="{{agreements.length === 0}}" class="empty-state">
     <text style="font-size:80rpx;">📋</text>
     <text>暂无领养协议</text>
-    <text style="font-size:24rpx;color:var(--text-secondary);margin-top:12rpx;">完成领养流程后可在此查看协议记录</text>
+    <text style="font-size:24rpx;color:var(--text-secondary);margin-top:12rpx;">下载并签署协议后，在此回传存档</text>
   </view>
 
   <view wx:else>
@@ -18,5 +18,13 @@
       </view>
       <text class="status">{{item.status === 'completed' ? '✅' : '📝'}}</text>
     </view>
+  </view>
+
+  <!-- 底部占位，防止被胶囊遮挡 -->
+  <view style="height:160rpx;"></view>
+
+  <!-- 底部胶囊按钮 -->
+  <view class="capsule-bar">
+    <button class="capsule-btn" bindtap="goUpload">📤 回传已签署协议</button>
   </view>
 </view>

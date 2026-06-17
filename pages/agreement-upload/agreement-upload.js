@@ -1,19 +1,49 @@
 // 协议回传页
 Page({
-  data: { catId: '', uploading: false, uploaded: false },
+  data: {
+    catId: '',
+    cats: [],
+    catIndex: -1,
+    uploading: false,
+    uploaded: false,
+  },
 
   onLoad(options) {
-    if (options.cat_id) this.setData({ catId: options.cat_id });
+    if (options.cat_id) {
+      this.setData({ catId: options.cat_id });
+    } else {
+      this.loadMyCats();
+    }
+  },
+
+  async loadMyCats() {
+    const app = getApp();
+    if (!app.globalData.userId) return;
+    const { select } = require('../../utils/supabase');
+    const cats = await select('cats', {
+      columns: 'id,name,breed',
+      filters: { created_by: app.globalData.userId },
+      order: { column: 'created_at', direction: 'desc' },
+    });
+    this.setData({ cats: cats || [] });
+  },
+
+  onCatSelect(e) {
+    const idx = Number(e.detail.value);
+    this.setData({ catId: this.data.cats[idx]?.id || '', catIndex: idx });
   },
 
   onChooseAndUpload() {
+    if (!this.data.catId) {
+      wx.showToast({ title: '请先选择一只猫咪', icon: 'none' });
+      return;
+    }
     const doPick = () => {
       wx.chooseImage({
         count: 1, sourceType: ['album', 'camera'],
         success: (res) => { this.uploadAgreement(res.tempFilePaths[0]); },
       });
     };
-    // 先触发隐私授权 → 通过后再调 chooseImage
     if (wx.requirePrivacyAuthorize) {
       wx.requirePrivacyAuthorize({ success: () => doPick(), fail: () => doPick() });
     } else {
@@ -24,7 +54,6 @@ Page({
   async uploadAgreement(filePath) {
     this.setData({ uploading: true });
     try {
-      // 上传到云函数处理（自动模糊化）
       const base64 = wx.getFileSystemManager().readFileSync(filePath, 'base64');
       const res = await wx.cloud.callFunction({
         name: 'process-agreement',
