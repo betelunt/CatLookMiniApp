@@ -1,7 +1,7 @@
 <!-- 协议模板下载 -->
 <view class="container">
   <view class="card" style="text-align:center;">
-    <text style="font-size:64rpx;display:block;margin-bottom:20rpx;">📄</text>
+    <image style="width:64rpx;height:64rpx;display:block;margin:0 auto 20rpx;" src="/images/icons/agreement.png" mode="aspectFit"></image>
     <text class="title">领养协议模板</text>
     <text class="desc" style="margin:20rpx 0;display:block;">
       猫录官方领养协议模板（PDF 格式）。<br/>

@@ -11,7 +11,7 @@ const CACHE_TTL = 30;
 Page({
   data: {
     isLoggedIn: false,
-    userInfo: { avatarUrl: '', nickName: '猫咪守护者' },
+    userInfo: { avatarUrl: '', nickName: '' },
     wechatId: '',
     recentCats: [],         // 仅展示最近 3 只
     totalCatCount: 0,
@@ -36,7 +36,27 @@ Page({
 
   loadUserInfo() {
     const wechatId = wx.getStorageSync('wechat_id') || '';
-    this.setData({ wechatId });
+    const savedAvatar = wx.getStorageSync('profile_avatar') || '';
+    const savedNick = wx.getStorageSync('profile_nick') || '';
+    this.setData({
+      wechatId,
+      'userInfo.avatarUrl': savedAvatar,
+      'userInfo.nickName': savedNick,
+    });
+  },
+
+  /** 选择头像 — open-type="chooseAvatar" */
+  onChooseAvatar(e) {
+    const avatarUrl = e.detail.avatarUrl;
+    this.setData({ 'userInfo.avatarUrl': avatarUrl });
+    wx.setStorageSync('profile_avatar', avatarUrl);
+  },
+
+  /** 昵称输入 — type="nickname" */
+  onNickInput(e) {
+    const nickName = e.detail.value;
+    this.setData({ 'userInfo.nickName': nickName });
+    wx.setStorageSync('profile_nick', nickName);
   },
 
   loadRecipeCount() {

@@ -10,7 +10,7 @@
   <view class="tab-bar">
     <view class="tab-item {{activeTab === 'food' ? 'active' : ''}}"
           data-tab="food" bindtap="onTabChange">
-      🔍 食物查询
+      <image style="width:32rpx;height:32rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/search.png" mode="aspectFit"></image>食物查询
     </view>
     <view class="tab-item {{activeTab === 'nutrition' ? 'active' : ''}}"
           data-tab="nutrition" bindtap="onTabChange">
@@ -91,7 +91,7 @@
 
   <!-- 无结果 -->
   <view wx:elif="{{noResult}}" class="empty-state">
-    <text style="font-size:80rpx;">🔍</text>
+    <image style="width:80rpx;height:80rpx;" src="/images/icons/search.png" mode="aspectFit"></image>
     <text>未找到匹配的食材</text>
   </view>
 
@@ -142,7 +142,7 @@
             <text class="detail-text">{{item.importance}}</text>
           </view>
           <view class="detail-section" wx:if="{{item.deficiency}}">
-            <text class="detail-label">⚠️ 缺乏症状</text>
+            <text class="detail-label"><image style="width:24rpx;height:24rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>缺乏症状</text>
             <text class="detail-text">{{item.deficiency}}</text>
           </view>
           <view class="detail-section" wx:if="{{item.dailyNeed}}">
@@ -178,7 +178,7 @@
           <text class="detail-text">{{item.advice}}</text>
         </view>
         <view class="supplement-warning" wx:if="{{item.warning}}">
-          <text class="detail-label">⚠️ 注意事项</text>
+          <text class="detail-label"><image style="width:24rpx;height:24rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>注意事项</text>
           <text class="detail-text">{{item.warning}}</text>
         </view>
       </view>

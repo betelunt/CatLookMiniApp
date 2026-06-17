@@ -94,7 +94,7 @@
   <!-- 免责声明 -->
   <view class="disclaimer-card">
     <text class="disclaimer-text">
-      ⚠️ 本配方由猫友「{{recipe.author.nickName || '未知'}}」个人分享，不代表平台建议。每只猫咪体质不同，请根据自家猫咪情况判断适用性。如有疑问请咨询兽医。
+      <image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>本配方由猫友「{{recipe.author.nickName || '未知'}}」个人分享，不代表平台建议。每只猫咪体质不同，请根据自家猫咪情况判断适用性。如有疑问请咨询兽医。
     </text>
   </view>
 </view>

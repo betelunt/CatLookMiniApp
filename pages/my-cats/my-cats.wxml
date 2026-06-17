@@ -23,9 +23,9 @@
         <view class="cat-tags">
           <text class="meta">{{item.breed}}</text>
           <text class="status-tag" style="color:{{statusColors[item.health_status]}}">{{item.health_status}}</text>
-          <text wx:if="{{item.city}}">📍 {{item.city}}</text>
+          <text wx:if="{{item.city}}"><image style="width:24rpx;height:24rpx;vertical-align:middle;margin-right:2rpx;" src="/images/icons/location.png" mode="aspectFit"></image>{{item.city}}</text>
         </view>
-        <view wx:if="{{item.adoption_status === 'seeking'}}" class="seeking-badge">🔍 找领养中</view>
+        <view wx:if="{{item.adoption_status === 'seeking'}}" class="seeking-badge"><image style="width:22rpx;height:22rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/search.png" mode="aspectFit"></image>找领养中</view>
       </view>
       <view class="cat-actions">
         <image class="action-icon" src="/images/icons/edit.png" mode="aspectFit" bindtap="goEdit" data-id="{{item.id}}"></image>

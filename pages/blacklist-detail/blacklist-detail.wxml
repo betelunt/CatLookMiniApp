@@ -6,7 +6,7 @@
 
   <!-- 声明 -->
   <view class="disclaimer">
-    ⚠️ 以下信息真实性由发布者个人承担。如侵犯您的个人权益，请与我们联系。
+    <image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>以下信息真实性由发布者个人承担。如侵犯您的个人权益，请与我们联系。
   </view>
 
   <!-- 信息表 -->
@@ -25,7 +25,7 @@
     </view>
     <view class="info-row">
       <text class="info-label">所在地</text>
-      <text class="info-value">📍 {{report.city}}</text>
+      <text class="info-value"><image style="width:24rpx;height:24rpx;vertical-align:middle;margin-right:2rpx;" src="/images/icons/location.png" mode="aspectFit"></image>{{report.city}}</text>
     </view>
     <view class="info-row" wx:if="{{report.id_number}}">
       <text class="info-label">身份证号</text>

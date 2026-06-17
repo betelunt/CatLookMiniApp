@@ -30,7 +30,7 @@
       </block>
     </text>
     <button wx:if="{{!uploaded}}" class="btn-primary" bindtap="onChooseAndUpload" loading="{{uploading}}">
-      📷 拍照/选择文件上传
+      <image style="width:36rpx;height:36rpx;vertical-align:middle;margin-right:8rpx;" src="/images/icons/camera.png" mode="aspectFit"></image>拍照/选择文件上传
     </button>
     <button wx:else class="btn-outline" bindtap="onChooseAndUpload">
       重新上传

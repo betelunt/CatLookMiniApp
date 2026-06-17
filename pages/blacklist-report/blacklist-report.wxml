@@ -146,7 +146,7 @@
 
     <!-- 提示 -->
     <view class="contact-notice">
-      <text style="font-size:40rpx;margin-bottom:12rpx;">⚠️</text>
+      <image style="width:40rpx;height:40rpx;margin-bottom:12rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>
       <text style="font-weight:700;margin-bottom:8rpx;">以下信息请务必填写</text>
       <text>我们会联系您进行核实，如果联系不上，您举报的信息将会自动作废。</text>
     </view>

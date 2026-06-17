@@ -20,11 +20,8 @@
     </view>
   </view>
 
-  <!-- 底部占位，防止被胶囊遮挡 -->
-  <view style="height:160rpx;"></view>
-
-  <!-- 底部胶囊按钮 -->
+  <!-- 胶囊按钮 -->
   <view class="capsule-bar">
-    <button class="capsule-btn" bindtap="goUpload">📤 回传已签署协议</button>
+    <button class="capsule-btn" bindtap="goUpload">回传已签署协议</button>
   </view>
 </view>

@@ -31,7 +31,7 @@
 
   <!-- 官方声明 -->
   <view class="disclaimer">
-    <text>⚠️ 以下信息由网友在各平台收集发布，资料来自领养人、送养人及媒体曝光等渠道。请大家诚信交流，共建健康领养环境。</text>
+    <text><image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/warning.png" mode="aspectFit"></image>以下信息由网友在各平台收集发布，资料来自领养人、送养人及媒体曝光等渠道。请大家诚信交流，共建健康领养环境。</text>
   </view>
 
   <!-- Tab 切换 -->

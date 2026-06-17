@@ -3,25 +3,23 @@
 .agreement-date { font-size: 24rpx; color: var(--text-secondary); }
 .status { font-size: 40rpx; }
 
-/* 底部胶囊按钮 */
+/* 胶囊按钮 */
 .capsule-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20rpx 40rpx;
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: linear-gradient(transparent, #fff 30%);
+  margin-top: 40rpx;
+  padding: 0 40rpx;
 }
 .capsule-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 88rpx;
-  line-height: 88rpx;
   border-radius: 44rpx;
   background: #FF8C42;
   color: #fff;
   font-size: 30rpx;
   font-weight: 600;
   border: none;
+  line-height: normal;
 }
 .capsule-btn::after { border: none; }

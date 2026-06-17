@@ -70,7 +70,7 @@
       </view>
     </picker>
     <text class="field-hint" wx:if="{{form.adoption_status === 'seeking'}}">
-      💡 开启后将自动发布到「猫咪领养」板块
+      <image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/tips.png" mode="aspectFit"></image>开启后将自动发布到「猫咪领养」板块
     </text>
   </view>
 
@@ -87,7 +87,7 @@
   <view class="form-group">
     <text class="label">特别提示</text>
     <textarea class="textarea" placeholder="如：喜欢吃鸡肉、怕生人、只亲近救助人等" value="{{form.special_notes}}" bindinput="onInput" data-field="special_notes" />
-    <text class="field-hint">💡 救助人的个别嘱托或注意事项，选填</text>
+    <text class="field-hint"><image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/tips.png" mode="aspectFit"></image>救助人的个别嘱托或注意事项，选填</text>
   </view>
 
   <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">

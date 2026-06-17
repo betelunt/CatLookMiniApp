@@ -12,10 +12,13 @@
   <view wx:else>
     <!-- ── 头部：头像 + 昵称 ── -->
     <view class="user-header card">
-      <view class="avatar-placeholder">🐱</view>
+      <view class="avatar-wrap">
+        <image class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo.avatarUrl}}" />
+        <view wx:else class="avatar-placeholder"><image style="width:48rpx;height:48rpx;" src="/images/icons/camera.png" mode="aspectFit"></image></view>
+        <button class="avatar-btn-overlay" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" />
+      </view>
       <view class="user-names">
-        <!-- 暂时用占位，后续接入微信头像 -->
-        <text class="nickname">🐱 猫咪守护者</text>
+        <input class="nickname-input" type="nickname" placeholder="微信昵称" value="{{userInfo.nickName}}" bindinput="onNickInput" />
         <text class="uid">已登录</text>
       </view>
     </view>

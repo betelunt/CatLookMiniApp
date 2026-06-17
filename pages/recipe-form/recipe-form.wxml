@@ -61,9 +61,9 @@
     <textarea class="textarea" placeholder="如：鸡肉必须全熟、不加调味料、适合肠胃敏感的猫咪..." value="{{form.tips}}" bindinput="onInput" data-field="tips" />
   </view>
 
-  <!-- ⚠️ 免责声明 -->
+  <!-- 免责声明 -->
   <view class="disclaimer">
-    <text class="disclaimer-icon">⚠️</text>
+    <image class="disclaimer-icon" src="/images/icons/warning.png" mode="aspectFit"></image>
     <text class="disclaimer-text">
       发布即表示您确认本配方经过自家猫咪实际食用验证。其他猫友请根据自家猫咪情况判断适用性，如有疑问请咨询兽医。本配方为用户个人分享，不代表平台建议。
     </text>
@@ -71,7 +71,7 @@
 
   <!-- 提交 -->
   <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">
-    {{isEdit ? '保存修改' : '🍳 发布配方'}}
+    {{isEdit ? '保存修改' : '发布配方'}}
   </button>
   <view style="height:60rpx;"></view>
 </view>

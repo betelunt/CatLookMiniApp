@@ -33,12 +33,12 @@
   </view>
 
   <view wx:if="{{cat.special_notes}}" class="card special-notes-card">
-    <text class="section-title">💡 特别提示</text>
+    <text class="section-title"><image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/tips.png" mode="aspectFit"></image>特别提示</text>
     <text>{{cat.special_notes}}</text>
   </view>
 
   <view wx:if="{{cat.adoption_status === 'seeking'}}" class="seeking-notice card">
-    <text>🔍 这只猫咪正在找领养，去「猫咪领养」Tab 了解更多</text>
+    <text><image style="width:28rpx;height:28rpx;vertical-align:middle;margin-right:4rpx;" src="/images/icons/search.png" mode="aspectFit"></image>这只猫咪正在找领养，去「猫咪领养」Tab 了解更多</text>
   </view>
 </view>
 
