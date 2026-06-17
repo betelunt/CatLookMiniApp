@@ -86,6 +86,7 @@ Page({
         },
       });
     };
+    // 先触发隐私授权 → 通过后再调 chooseImage
     if (wx.requirePrivacyAuthorize) {
       wx.requirePrivacyAuthorize({ success: () => doPick(), fail: () => doPick() });
     } else {

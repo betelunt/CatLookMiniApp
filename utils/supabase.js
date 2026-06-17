@@ -66,6 +66,7 @@ function request(method, path, { body, params, auth = true, extraHeaders = {} } 
           wx.removeStorageSync('supabase_token');
           reject({ status: 401, message: res.data });
         } else {
+          console.error('[supabase]', method, url, '→', res.statusCode, JSON.stringify(res.data));
           reject({ status: res.statusCode, message: res.data });
         }
       },
@@ -117,7 +118,7 @@ function select(table, { columns = '*', filters = {}, limit, offset, order, publ
 function insert(table, data) {
   return request('POST', `/${table}`, {
     body: data,
-    params: { return: 'representation' },
+    extraHeaders: { 'Prefer': 'return=representation' },
   }).then(r => r.data);
 }
 

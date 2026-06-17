@@ -101,19 +101,16 @@ const AGREEMENT_TERMS = `
 
 exports.main = async (event) => {
   const { cat_id, rescuer_info, adopter_info } = event;
-  if (!cat_id) {
-    return { ok: false, error: 'missing cat_id' };
-  }
 
   try {
-    // ── 1. 获取猫咪信息 ──────────────────────────────────
-    const cats = await supabaseAdmin(
-      'GET',
-      `/rest/v1/cats?id=eq.${encodeURIComponent(cat_id)}&select=*&limit=1`
-    );
-    const cat = cats?.[0];
-    if (!cat) {
-      return { ok: false, error: 'cat not found' };
+    // ── 1. 获取猫咪信息（可选）────────────────────────────
+    let cat = null;
+    if (cat_id) {
+      const cats = await supabaseAdmin(
+        'GET',
+        `/rest/v1/cats?id=eq.${encodeURIComponent(cat_id)}&select=*&limit=1`
+      );
+      cat = cats?.[0];
     }
 
     // ── 2. 生成 PDF ─────────────────────────────────────
@@ -147,15 +144,16 @@ exports.main = async (event) => {
     y -= 10;
 
     // 猫咪信息表
-    writeLine('── 猫咪信息 ──', 14, { bold: true });
-    writeLine(`名称: ${cat.name || '___'}`, 12);
-    writeLine(`品种: ${cat.breed || '___'}`, 12);
-    writeLine(`年龄: ${cat.age || '___'}`, 12);
-    writeLine(`性别: ${cat.gender || '___'}   是否绝育: ${cat.is_neutered ? '是' : '否'}`, 12);
-    writeLine(`毛色特征: ${cat.appearance || '___'}`, 12);
-    writeLine(`性格: ${cat.personality || '___'}`, 12);
-    writeLine(`健康状况: ${cat.status || '___'}`, 12);
-    y -= 10;
+    if (cat) {
+      writeLine('── 猫咪信息 ──', 14, { bold: true });
+      writeLine(`名称: ${cat.name || '___'}`, 12);
+      writeLine(`品种: ${cat.breed || '___'}`, 12);
+      writeLine(`年龄: ${cat.age || '___'}`, 12);
+      writeLine(`性别: ${cat.gender || '___'}   是否绝育: ${cat.is_neutered ? '是' : '否'}`, 12);
+      writeLine(`描述: ${cat.description || '___'}`, 12);
+      writeLine(`健康状况: ${cat.health_status || '___'}`, 12);
+      y -= 10;
+    }
 
     // 救助人 / 领养人信息
     writeLine('── 双方信息 ──', 14, { bold: true });

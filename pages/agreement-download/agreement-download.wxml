@@ -4,8 +4,8 @@
     <text style="font-size:64rpx;display:block;margin-bottom:20rpx;">📄</text>
     <text class="title">领养协议模板</text>
     <text class="desc" style="margin:20rpx 0;display:block;">
-      猫录官方领养协议模板（.doc 格式）。<br/>
-      请下载后双方填写信息并线下签署。<br/>
+      猫录官方领养协议模板（PDF 格式）。<br/>
+      下载后双方填写信息并线下签署。<br/>
       签署完成后可在本小程序回传存档。
     </text>
     <button class="btn-primary" bindtap="onDownload" loading="{{downloading}}">

@@ -50,9 +50,9 @@
 
   <view class="form-group">
     <text class="label">性别</text>
-    <picker mode="selector" range="{{genderOptions}}" bindchange="onSelect" data-field="gender">
+    <picker mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onSelect" data-field="gender">
       <view class="picker-value">
-        {{genderOptions[genderValues.indexOf(form.gender)] || '请选择性别'}}
+        {{genderOptions[genderIndex] || '请选择性别'}}
       </view>
     </picker>
   </view>

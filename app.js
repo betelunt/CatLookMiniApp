@@ -49,21 +49,47 @@ App({
 
   /** 初始化隐私协议授权监听 */
   initPrivacy() {
-    // 检查基础库是否支持隐私授权 API
+    console.log('[privacy] onNeedPrivacyAuthorization available:', !!wx.onNeedPrivacyAuthorization);
+    console.log('[privacy] requirePrivacyAuthorize available:', !!wx.requirePrivacyAuthorize);
+
+    // 查看当前隐私授权状态
+    if (wx.getPrivacySetting) {
+      wx.getPrivacySetting({
+        success: (res) => {
+          console.log('[privacy] current setting:', JSON.stringify(res));
+          // res.needAuthorization: 是否需要用户授权
+          // res.privacyContractName: 隐私协议名称
+        },
+        fail: (err) => console.error('[privacy] getPrivacySetting failed:', err),
+      });
+    }
+
     if (wx.onNeedPrivacyAuthorization) {
-      wx.onNeedPrivacyAuthorization((resolve) => {
-        // 弹出系统隐私协议弹窗
-        wx.requirePrivacyAuthorize({
-          success: () => {
-            // 用户同意
-            resolve({ event: 'agree' });
+      console.log('[privacy] registering onNeedPrivacyAuthorization listener');
+      wx.onNeedPrivacyAuthorization((resolve, eventInfo) => {
+        console.log('[privacy] onNeedPrivacyAuthorization FIRED! eventInfo:', JSON.stringify(eventInfo));
+        wx.showModal({
+          title: '隐私保护指引',
+          content: '在使用小程序前，需要您阅读并同意《猫录助手隐私保护指引》。\n\n点击"同意"即表示您已阅读并同意全部内容。',
+          confirmText: '同意',
+          cancelText: '拒绝',
+          success(modalRes) {
+            console.log('[privacy] user choice:', modalRes.confirm ? 'agree' : 'disagree');
+            if (modalRes.confirm) {
+              resolve({ event: 'agree' });
+            } else {
+              resolve({ event: 'disagree' });
+            }
           },
-          fail: () => {
-            // 用户拒绝
+          fail(err) {
+            console.error('[privacy] showModal failed:', err);
             resolve({ event: 'disagree' });
           },
         });
       });
+      console.log('[privacy] listener registered');
+    } else {
+      console.warn('[privacy] onNeedPrivacyAuthorization NOT supported in this base library');
     }
   },
 
@@ -98,21 +124,41 @@ App({
 
   /** 真实登录 —— 通过云函数 auth-bridge */
   async realLogin() {
-    const { code } = await wx.login();
-    const res = await wx.cloud.callFunction({
-      name: 'auth-bridge',
-      data: { code },
-    });
-    const { token, userId } = res.result;
+    wx.showLoading({ title: '登录中...' });
+    try {
+      const { code } = await wx.login();
+      console.log('[login] wx.login code:', code ? code.slice(0, 8) + '...' : 'null');
 
-    this.globalData.isLoggedIn = true;
-    this.globalData.token = token;
-    this.globalData.userId = userId;
+      const res = await wx.cloud.callFunction({
+        name: 'auth-bridge',
+        data: { code },
+      });
 
-    wx.setStorageSync('supabase_token', token);
-    wx.setStorageSync('user_id', userId);
+      wx.hideLoading();
+      console.log('[login] cloud function result:', JSON.stringify(res));
 
-    return { token, userId };
+      if (!res.result || !res.result.ok) {
+        const errMsg = (res.result && res.result.error) || '未知错误';
+        wx.showToast({ title: '登录失败: ' + errMsg, icon: 'none', duration: 3000 });
+        throw new Error(errMsg);
+      }
+
+      const { token, userId } = res.result;
+
+      this.globalData.isLoggedIn = true;
+      this.globalData.token = token;
+      this.globalData.userId = userId;
+
+      wx.setStorageSync('supabase_token', token);
+      wx.setStorageSync('user_id', userId);
+
+      return { token, userId };
+    } catch (e) {
+      wx.hideLoading();
+      console.error('[login] 登录异常:', e);
+      wx.showToast({ title: '登录异常: ' + (e.message || '超时'), icon: 'none', duration: 3000 });
+      throw e;
+    }
   },
 
   /** 清除登录态 */
