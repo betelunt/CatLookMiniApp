@@ -109,6 +109,11 @@ Page({
     });
   },
 
+  /** 跳转拍照识配料 */
+  goScan() {
+    wx.navigateTo({ url: '/pages/ingredient-scan/ingredient-scan' });
+  },
+
   goDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/food-detail/food-detail?id=${id}` });

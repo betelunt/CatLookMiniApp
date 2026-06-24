@@ -9,6 +9,8 @@
     "pages/agreement-upload/agreement-upload",
     "pages/food-search/food-search",
     "pages/food-detail/food-detail",
+    "pages/ingredient-scan/ingredient-scan",
+    "pages/ingredient-result/ingredient-result",
     "pages/profile/profile",
     "pages/login/login",
     "pages/my-cats/my-cats",
@@ -19,7 +21,8 @@
     "pages/blacklist/blacklist",
     "pages/blacklist-detail/blacklist-detail",
     "pages/blacklist-report/blacklist-report",
-    "pages/agreement/agreement"
+    "pages/agreement/agreement",
+    "pages/privacy-consent/privacy-consent"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FF8C42",

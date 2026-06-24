@@ -1,0 +1,66 @@
+<!-- 配料分析结果 -->
+<view class="container">
+  <!-- 头部摘要 -->
+  <view class="result-header card">
+    <view class="result-summary">
+      <view class="summary-icon">📊</view>
+      <view class="summary-info">
+        <text class="summary-title">配料分析完成</text>
+        <text class="summary-desc">共识别 {{ingredients.length}} 种配料</text>
+      </view>
+    </view>
+    <!-- 统计条 -->
+    <view class="stats-bar">
+      <view class="stat-item stat-safe">
+        <text class="stat-num">{{stats.safe}}</text>
+        <text class="stat-label">安全</text>
+      </view>
+      <view class="stat-item stat-caution">
+        <text class="stat-num">{{stats.caution}}</text>
+        <text class="stat-label">慎用</text>
+      </view>
+      <view class="stat-item stat-danger">
+        <text class="stat-num">{{stats.danger}}</text>
+        <text class="stat-label">危险</text>
+      </view>
+      <view class="stat-item stat-unknown">
+        <text class="stat-num">{{stats.unknown}}</text>
+        <text class="stat-label">未知</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配料列表 -->
+  <view class="ingredient-list">
+    <view class="ingredient-item {{item.safety === 'danger' ? 'item-danger' : item.safety === 'caution' ? 'item-caution' : item.safety === 'safe' ? 'item-safe' : 'item-unknown'}}"
+          wx:for="{{ingredients}}" wx:key="name">
+      <!-- 图标 + 名称 -->
+      <view class="ing-head">
+        <text class="ing-emoji">
+          {{item.safety === 'danger' ? '🔴' : item.safety === 'caution' ? '⚠️' : item.safety === 'safe' ? '✅' : '❓'}}
+        </text>
+        <text class="ing-name">{{item.name}}</text>
+        <view class="ing-tag tag-{{item.safety}}">
+          {{item.safety === 'danger' ? '危险' : item.safety === 'caution' ? '慎用' : item.safety === 'safe' ? '安全' : '未知'}}
+        </view>
+      </view>
+      <!-- 说明 -->
+      <text class="ing-desc" wx:if="{{item.description}}">{{item.description}}</text>
+      <!-- 警告（仅危险项） -->
+      <view class="ing-warning" wx:if="{{item.warning}}">
+        <text class="warning-icon">⚠️</text>
+        <text class="warning-text">{{item.warning}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{ingredients.length === 0}}">
+    <text>未能识别到任何配料</text>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-actions">
+    <view class="btn-outline" bindtap="scanAgain">🔄 再拍一张</view>
+  </view>
+</view>

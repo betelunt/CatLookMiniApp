@@ -1,5 +1,19 @@
 <!-- 食物查询 Tab3 -->
 <view class="container">
+  <!-- 📷 拍照识配料入口 -->
+  <view class="scan-entry card" bindtap="goScan">
+    <view class="scan-entry-left">
+      <view class="scan-icon-wrap">
+        <image class="scan-icon-img" src="/images/icons/camera.png" mode="aspectFit"></image>
+      </view>
+      <view class="scan-entry-text">
+        <text class="scan-entry-title">拍照识别配料表</text>
+        <text class="scan-entry-sub">一拍即知，秒懂猫咪能不能吃</text>
+      </view>
+    </view>
+    <text class="scan-entry-arrow">›</text>
+  </view>
+
   <!-- 搜索框 -->
   <view class="search-box">
     <input class="search-input" placeholder="搜索食材名称..." value="{{searchText}}" bindinput="onSearch" />

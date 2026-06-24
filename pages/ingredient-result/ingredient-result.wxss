@@ -1,0 +1,70 @@
+/* ── 配料分析结果 ── */
+
+/* 头部摘要 */
+.result-header { padding: 24rpx; }
+.result-summary {
+  display: flex; align-items: center; gap: 16rpx; margin-bottom: 20rpx;
+}
+.summary-icon { font-size: 48rpx; }
+.summary-info { display: flex; flex-direction: column; gap: 4rpx; }
+.summary-title { font-size: 30rpx; font-weight: 700; color: var(--text); }
+.summary-desc { font-size: 24rpx; color: var(--text-secondary); }
+
+/* 统计条 */
+.stats-bar {
+  display: flex; gap: 12rpx;
+}
+.stat-item { flex: 1; text-align: center; padding: 12rpx 0; border-radius: 10rpx; }
+.stat-num { display: block; font-size: 36rpx; font-weight: 800; }
+.stat-label { display: block; font-size: 20rpx; margin-top: 2rpx; }
+.stat-safe { background: #E8F5E9; }
+.stat-safe .stat-num { color: #2E7D32; }
+.stat-caution { background: #FFF3E0; }
+.stat-caution .stat-num { color: #E65100; }
+.stat-danger { background: #FFEBEE; }
+.stat-danger .stat-num { color: #C62828; }
+.stat-unknown { background: #F5F5F5; }
+.stat-unknown .stat-num { color: #757575; }
+
+/* 配料列表 */
+.ingredient-list { margin-top: 16rpx; }
+.ingredient-item {
+  padding: 20rpx 24rpx; margin-bottom: 12rpx; border-radius: 14rpx;
+  border-left: 5rpx solid transparent;
+}
+.item-safe { background: #F1F8E9; border-left-color: #4CAF50; }
+.item-caution { background: #FFF8E1; border-left-color: #FF9800; }
+.item-danger { background: #FFF0F0; border-left-color: #F44336; }
+.item-unknown { background: #F5F5F5; border-left-color: #9E9E9E; }
+
+.ing-head {
+  display: flex; align-items: center; gap: 10rpx; margin-bottom: 6rpx;
+}
+.ing-emoji { font-size: 28rpx; flex-shrink: 0; }
+.ing-name { font-size: 28rpx; font-weight: 700; color: var(--text); }
+.ing-tag {
+  margin-left: auto; padding: 4rpx 14rpx; border-radius: 20rpx;
+  font-size: 20rpx; font-weight: 600; flex-shrink: 0;
+}
+.tag-safe { background: #4CAF50; color: #FFF; }
+.tag-caution { background: #FF9800; color: #FFF; }
+.tag-danger { background: #F44336; color: #FFF; }
+.tag-unknown { background: #9E9E9E; color: #FFF; }
+
+.ing-desc {
+  font-size: 24rpx; color: var(--text-secondary); line-height: 1.6;
+  display: block; padding-left: 38rpx;
+}
+.ing-warning {
+  display: flex; align-items: flex-start; gap: 6rpx;
+  margin-top: 8rpx; padding: 10rpx 14rpx;
+  background: rgba(244, 67, 54, 0.08); border-radius: 8rpx;
+}
+.warning-icon { font-size: 22rpx; flex-shrink: 0; }
+.warning-text { font-size: 22rpx; color: #C62828; line-height: 1.5; }
+
+/* 底部操作 */
+.bottom-actions {
+  margin-top: 24rpx; padding-bottom: 40rpx;
+}
+.bottom-actions .btn-outline { width: 100%; text-align: center; }

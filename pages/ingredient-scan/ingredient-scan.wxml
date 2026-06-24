@@ -1,0 +1,73 @@
+<!-- 拍照识配料 -->
+<view class="container">
+
+  <!-- ═══ 步骤指示器 ═══ -->
+  <view class="steps">
+    <view class="step-dot {{stepIndex >= 1 ? 'on' : ''}}"></view>
+    <view class="step-dot {{stepIndex >= 2 ? 'on' : ''}}"></view>
+    <view class="step-dot {{stepIndex >= 3 ? 'on' : ''}}"></view>
+  </view>
+
+  <!-- ═══ 步骤 1：拍照入口 ═══ -->
+  <block wx:if="{{step === 'camera'}}">
+    <view class="camera-section">
+      <!-- 取景框 -->
+      <view class="viewfinder">
+        <view class="corner-tl"></view>
+        <view class="corner-tr"></view>
+        <view class="corner-bl"></view>
+        <view class="corner-br"></view>
+        <image class="viewfinder-icon" src="/images/icons/camera.png" mode="aspectFit"></image>
+        <text class="viewfinder-title">拍摄产品配料表</text>
+        <text class="viewfinder-hint">将产品包装背面的\n「配料表」放在框内拍摄</text>
+      </view>
+
+      <!-- 按钮 -->
+      <view class="camera-actions">
+        <view class="btn btn-primary" bindtap="takePhoto">
+          <image class="btn-icon" src="/images/icons/camera.png" mode="aspectFit"></image>
+          拍照识别
+        </view>
+        <text class="or-divider">— 或 —</text>
+        <view class="btn btn-outline" bindtap="pickFromAlbum">从相册选择</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ═══ 步骤 2：预览确认 ═══ -->
+  <block wx:if="{{step === 'preview'}}">
+    <view class="preview-section">
+      <view class="preview-card">
+        <image class="preview-img" src="{{photoPath}}" mode="aspectFit"></image>
+      </view>
+      <view class="preview-status">
+        <view class="status-dot"></view>
+        <text class="status-text">照片清晰可用</text>
+      </view>
+      <view class="preview-actions">
+        <view class="btn btn-ghost" bindtap="retake">重拍</view>
+        <view class="btn btn-primary" bindtap="confirmScan">确认识别</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ═══ 步骤 3：识别中 ═══ -->
+  <block wx:if="{{step === 'loading'}}">
+    <view class="loading-section">
+      <!-- 扫描动画 -->
+      <view class="scan-area">
+        <image class="scan-icon-bg" src="/images/icons/camera.png" mode="aspectFit"></image>
+        <view class="scan-line"></view>
+      </view>
+
+      <text class="loading-title">正在识别配料表...</text>
+      <text class="loading-sub">AI 正在逐行分析成分，请稍候</text>
+
+      <!-- 提示轮播 -->
+      <view class="tip-box">
+        <text class="tip-text">{{loadingTip}}</text>
+      </view>
+    </view>
+  </block>
+
+</view>

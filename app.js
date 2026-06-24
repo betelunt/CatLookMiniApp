@@ -66,26 +66,12 @@ App({
 
     if (wx.onNeedPrivacyAuthorization) {
       console.log('[privacy] registering onNeedPrivacyAuthorization listener');
+      const app = this;
       wx.onNeedPrivacyAuthorization((resolve, eventInfo) => {
         console.log('[privacy] onNeedPrivacyAuthorization FIRED! eventInfo:', JSON.stringify(eventInfo));
-        wx.showModal({
-          title: '隐私保护指引',
-          content: '在使用小程序前，需要您阅读并同意《猫录助手隐私保护指引》。\n\n点击"同意"即表示您已阅读并同意全部内容。',
-          confirmText: '同意',
-          cancelText: '拒绝',
-          success(modalRes) {
-            console.log('[privacy] user choice:', modalRes.confirm ? 'agree' : 'disagree');
-            if (modalRes.confirm) {
-              resolve({ event: 'agree' });
-            } else {
-              resolve({ event: 'disagree' });
-            }
-          },
-          fail(err) {
-            console.error('[privacy] showModal failed:', err);
-            resolve({ event: 'disagree' });
-          },
-        });
+        // 存储 resolve 回调，跳转隐私协议页面
+        app.globalData._privacyResolve = resolve;
+        wx.navigateTo({ url: '/pages/privacy-consent/privacy-consent' });
       });
       console.log('[privacy] listener registered');
     } else {

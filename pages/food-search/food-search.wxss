@@ -1,3 +1,25 @@
+/* ── 拍照识配料入口 ── */
+.scan-entry {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20rpx 24rpx; margin-bottom: 24rpx;
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFF3E6 100%);
+  border: 2rpx solid rgba(255, 140, 66, 0.18);
+  border-radius: 16rpx;
+}
+.scan-entry-left {
+  display: flex; align-items: center; gap: 16rpx;
+}
+.scan-icon-wrap {
+  width: 72rpx; height: 72rpx; border-radius: 18rpx;
+  background: #FFF; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(255, 140, 66, 0.12);
+}
+.scan-icon-img { width: 48rpx; height: 48rpx; }
+.scan-entry-text { display: flex; flex-direction: column; gap: 4rpx; }
+.scan-entry-title { font-size: 28rpx; font-weight: 700; color: var(--text); }
+.scan-entry-sub { font-size: 22rpx; color: var(--text-secondary); }
+.scan-entry-arrow { font-size: 40rpx; color: #CCC; }
+
 .search-box {
   position: relative; margin-bottom: 24rpx;
 }
